@@ -16,6 +16,8 @@ pkgs.stdenv.mkDerivation {
     pkgs.libtool
     pkgs.texinfo
     pkgs.pkgconf
+    pkgs.pkg-config
+    pkgs.intltool
   ];
 
   # Override phases if necessary, or define custom ones
