@@ -12,6 +12,10 @@ pkgs.stdenv.mkDerivation rec {
 
   outputs = [ "out" "dev" ];
 
+  nativeBuildInputs = [
+    pkgs.autoreconfHook
+  ];
+
   buildInputs = [
     (pkgs.callPackage ./libqalculate.nix {})
   ];
