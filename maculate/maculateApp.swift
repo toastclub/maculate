@@ -7,8 +7,10 @@
 
 import SwiftUI
 
+
 @main
 struct maculateApp: App {
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
