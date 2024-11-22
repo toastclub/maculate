@@ -1,7 +1,5 @@
 #include <libqalculate/qalculate.h>
 
-using namespace emscripten;
-
 Calculator* getCalculator() {
     // there's only one global calculator, and you're not supposed to call
     // the Calculator constructor after it's initialized
