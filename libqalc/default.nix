@@ -55,11 +55,11 @@ pkgs.stdenv.mkDerivation rec {
       --replace 'printf(_("aborted"))' 'printf("%s", _("aborted"))'
   '';
 
-  preBuild = ''
+  /*preBuild = ''
     pushd docs/reference
     doxygen Doxyfile
     popd
-  '';
+  '';*/
 
   postInstall = ''
     # Ensure all headers from propagatedBuildInputs are copied to the include directory
@@ -69,6 +69,11 @@ pkgs.stdenv.mkDerivation rec {
         cp -r $dep/* $out/include/
       fi
     done
+
+    rm -rf $out/share/doc
+    mkdir -p $out/lib
+    cp ${pkgs.gmp.out}/lib/libgmp.dylib $out/lib/
+    cp ${pkgs.mpfr.out}/lib/libmpfr.dylib $out/lib/
   '';
 
   meta = with pkgs.lib; {
