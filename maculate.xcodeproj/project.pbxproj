@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		202EDAA82CF0DE9700426644 /* Qalculate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 202EDAA02CF0DE9700426644 /* Qalculate.framework */; };
-		202EDAA92CF0DE9700426644 /* Qalculate.framework in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 202EDAA02CF0DE9700426644 /* Qalculate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		209F2F2D2CF1779400D8E662 /* Qalculate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 202EDAA02CF0DE9700426644 /* Qalculate.framework */; };
+		209F2F2E2CF1779400D8E662 /* Qalculate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 202EDAA02CF0DE9700426644 /* Qalculate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,12 +26,12 @@
 			remoteGlobalIDString = 202436BE2CF032AE00734E77;
 			remoteInfo = maculate;
 		};
-		202EDAA62CF0DE9700426644 /* PBXContainerItemProxy */ = {
+		209F2F2F2CF1779400D8E662 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 202436B72CF032AE00734E77 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 202EDA9F2CF0DE9700426644;
-			remoteInfo = QalculateFramework;
+			remoteInfo = Qalculate;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -46,15 +46,15 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		20E30CE12CF0346000194ED3 /* Embed Libraries */ = {
+		209F2F2A2CF1744C00D8E662 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				202EDAA92CF0DE9700426644 /* Qalculate.framework in Embed Libraries */,
+				209F2F2E2CF1779400D8E662 /* Qalculate.framework in Embed Frameworks */,
 			);
-			name = "Embed Libraries";
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -75,7 +75,51 @@
 			);
 			target = 202EDA9F2CF0DE9700426644 /* Qalculate */;
 		};
+		209F2FBB2CF1869B00D8E662 /* Exceptions for "Qalculate" folder in "maculate" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				frameworks/LibQalculate.xcframework,
+			);
+			target = 202436BE2CF032AE00734E77 /* maculate */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		209F2FAA2CF1865800D8E662 /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Qalculate" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			attributesByRelativePath = {
+				frameworks/GMP.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				frameworks/ICU.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				frameworks/ICUData.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				frameworks/ICUI18N.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				frameworks/LibIntl.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				frameworks/LibQalculate.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				frameworks/LibXML2.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				frameworks/MPFR.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+			};
+			buildPhase = 200D86852CF13C79001FACD0 /* Embed Frameworks */;
+			membershipExceptions = (
+				frameworks/GMP.xcframework,
+				frameworks/ICU.xcframework,
+				frameworks/ICUData.xcframework,
+				frameworks/ICUI18N.xcframework,
+				frameworks/LibIntl.xcframework,
+				frameworks/LibQalculate.xcframework,
+				frameworks/LibXML2.xcframework,
+				frameworks/MPFR.xcframework,
+			);
+		};
+		209F2FBC2CF1869B00D8E662 /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "maculate" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			attributesByRelativePath = {
+				frameworks/LibQalculate.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+			};
+			buildPhase = 209F2F2A2CF1744C00D8E662 /* Embed Frameworks */;
+			membershipExceptions = (
+				frameworks/LibQalculate.xcframework,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		202436C12CF032AE00734E77 /* maculate */ = {
@@ -96,7 +140,10 @@
 		202EDAA12CF0DE9700426644 /* Qalculate */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				209F2FBB2CF1869B00D8E662 /* Exceptions for "Qalculate" folder in "maculate" target */,
+				209F2FBC2CF1869B00D8E662 /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "maculate" target */,
 				202EDAAA2CF0DE9700426644 /* Exceptions for "Qalculate" folder in "Qalculate" target */,
+				209F2FAA2CF1865800D8E662 /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Qalculate" target */,
 			);
 			explicitFileTypes = {
 				main.hpp = sourcecode.cpp.h;
@@ -111,7 +158,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				202EDAA82CF0DE9700426644 /* Qalculate.framework in Frameworks */,
+				209F2F2D2CF1779400D8E662 /* Qalculate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,6 +193,7 @@
 				202436C12CF032AE00734E77 /* maculate */,
 				202436D32CF032B000734E77 /* maculateTests */,
 				202436DD2CF032B000734E77 /* maculateUITests */,
+				209F2F542CF17A5400D8E662 /* Frameworks */,
 				202436C02CF032AE00734E77 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -169,6 +217,13 @@
 			path = libqalc;
 			sourceTree = "<group>";
 		};
+		209F2F542CF17A5400D8E662 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -189,12 +244,12 @@
 				202436BB2CF032AE00734E77 /* Sources */,
 				202436BC2CF032AE00734E77 /* Frameworks */,
 				202436BD2CF032AE00734E77 /* Resources */,
-				20E30CE12CF0346000194ED3 /* Embed Libraries */,
+				209F2F2A2CF1744C00D8E662 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				202EDAA72CF0DE9700426644 /* PBXTargetDependency */,
+				209F2F302CF1779400D8E662 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				202436C12CF032AE00734E77 /* maculate */,
@@ -397,10 +452,10 @@
 			target = 202436BE2CF032AE00734E77 /* maculate */;
 			targetProxy = 202436DB2CF032B000734E77 /* PBXContainerItemProxy */;
 		};
-		202EDAA72CF0DE9700426644 /* PBXTargetDependency */ = {
+		209F2F302CF1779400D8E662 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 202EDA9F2CF0DE9700426644 /* Qalculate */;
-			targetProxy = 202EDAA62CF0DE9700426644 /* PBXContainerItemProxy */;
+			targetProxy = 209F2F2F2CF1779400D8E662 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -542,6 +597,7 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+					"@executable_path",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -576,6 +632,7 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+					"@executable_path",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -671,7 +728,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_MODULE_VERIFIER = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/libqalc/result/include/**";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -711,7 +768,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_MODULE_VERIFIER = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/libqalc/result/include/**";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";

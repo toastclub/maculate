@@ -35,6 +35,9 @@ pkgs.stdenv.mkDerivation rec {
     "--enable-compiled-definitions"
   ];
 
+  # todo: this is preferable, but it causes configure: error: C compiler cannot create executables
+  #LDFLAGS = "-avoid-version";
+
   enableParallelBuilding = true;
 
   preConfigure = ''
@@ -68,13 +71,16 @@ pkgs.stdenv.mkDerivation rec {
     rm -rf $out/share/doc
     rm -rf $out/share/locale
     mkdir -p $out/lib
-    cp ${pkgs.gmp.out}/lib/libgmp.dylib $out/lib/
-    cp ${pkgs.mpfr.out}/lib/libmpfr.dylib $out/lib/
-    cp ${pkgs.icu.out}/lib/libicuuc.dylib $out/lib/
-    cp ${pkgs.icu.out}/lib/libicudata.dylib $out/lib/
-    cp ${pkgs.icu.out}/lib/libicui18n.dylib $out/lib/
-    cp ${pkgs.libxml2.out}/lib/libxml2.dylib $out/lib/
-    cp ${pkgs.gettext.out}/lib/libintl.dylib $out/lib/
+    for lib in ${pkgs.gmp.out}/lib/libgmp.dylib \
+           ${pkgs.mpfr.out}/lib/libmpfr.dylib \
+           ${pkgs.icu.out}/lib/libicuuc.dylib \
+           ${pkgs.icu.out}/lib/libicudata.dylib \
+           ${pkgs.icu.out}/lib/libicui18n.dylib \
+           ${pkgs.libxml2.out}/lib/libxml2.dylib \
+           ${pkgs.gettext.out}/lib/libintl.dylib; do
+      target=$(readlink "$lib" || basename "$lib")
+      cp "$lib" "$out/lib/$target"
+    done
     # iconv is only used for the cli
     #cp ${pkgs.libiconv.out}/lib/libiconv.dylib $out/lib/
 

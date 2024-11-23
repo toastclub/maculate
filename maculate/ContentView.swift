@@ -9,6 +9,8 @@ import SwiftUI
 import Qalculate
 
 struct ContentView: View {
+    var c = getCalculator()
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
