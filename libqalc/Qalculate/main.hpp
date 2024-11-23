@@ -7,5 +7,6 @@ using std::string;
 
 Calculator *getCalculator();
 std::string qalc_gnuplot_data_dir();
+std::string calculate(std::string calculation);
 
 #endif // MAIN_H
