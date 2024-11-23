@@ -36,8 +36,7 @@ pkgs.stdenv.mkDerivation rec {
   ];
 
   configureFlags = [
-    "--disable-shared"
-    "--enable-static"
+    "--without-libcurl"
   ];
 
   enableParallelBuilding = true;
@@ -71,9 +70,19 @@ pkgs.stdenv.mkDerivation rec {
     done
 
     rm -rf $out/share/doc
+    rm -rf $out/share/locale
     mkdir -p $out/lib
     cp ${pkgs.gmp.out}/lib/libgmp.dylib $out/lib/
     cp ${pkgs.mpfr.out}/lib/libmpfr.dylib $out/lib/
+    cp ${pkgs.icu.out}/lib/libicuuc.dylib $out/lib/
+    cp ${pkgs.icu.out}/lib/libicudata.dylib $out/lib/
+    cp ${pkgs.icu.out}/lib/libicui18n.dylib $out/lib/
+    cp ${pkgs.libxml2.out}/lib/libxml2.dylib $out/lib/
+    cp ${pkgs.gettext.out}/lib/libintl.dylib $out/lib/
+    cp ${pkgs.libiconv.out}/lib/libiconv.dylib $out/lib/
+
+    # remove the .la files
+    find $out -name "*.la" -type f -delete
   '';
 
   meta = with pkgs.lib; {

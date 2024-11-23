@@ -1,8 +1,9 @@
 #ifndef MAIN_H
 #define MAIN_H
+#include <string>
+using std::string;
 
-#include <libqalculate/qalculate.h>
-#include <libqalculate/Calculator.h>
+#include <LibQalculate.h>
 
 Calculator *getCalculator();
 std::string qalc_gnuplot_data_dir();

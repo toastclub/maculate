@@ -1,6 +1,4 @@
-#include <libqalculate/qalculate.h>
-#include <libqalculate/Calculator.h>
-
+#include "LibQalculate.h"
 Calculator *getCalculator()
 {
     // there's only one global calculator, and you're not supposed to call
@@ -9,7 +7,6 @@ Calculator *getCalculator()
     {
         new Calculator();
     }
-    
 
     return CALCULATOR;
 }
