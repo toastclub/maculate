@@ -11,22 +11,17 @@ pkgs.stdenv.mkDerivation rec {
     hash = "sha256-cmH92gdQ+fmtOLgx5ibKqLZaQFzx2z+GuXhR62dtftk=";
   };
 
-
   nativeBuildInputs = [
     pkgs.intltool
     pkgs.pkg-config
     pkgs.autoreconfHook
-    pkgs.doxygen
   ];
   depsBuildBuild = [
     pkgs.stdenv.cc
   ];
 
   buildInputs = [
-    pkgs.curl
     pkgs.gettext
-    pkgs.libiconv
-    pkgs.readline
   ];
   propagatedBuildInputs = [
     pkgs.libxml2
@@ -37,6 +32,7 @@ pkgs.stdenv.mkDerivation rec {
 
   configureFlags = [
     "--without-libcurl"
+    "--enable-compiled-definitions"
   ];
 
   enableParallelBuilding = true;
@@ -79,7 +75,8 @@ pkgs.stdenv.mkDerivation rec {
     cp ${pkgs.icu.out}/lib/libicui18n.dylib $out/lib/
     cp ${pkgs.libxml2.out}/lib/libxml2.dylib $out/lib/
     cp ${pkgs.gettext.out}/lib/libintl.dylib $out/lib/
-    cp ${pkgs.libiconv.out}/lib/libiconv.dylib $out/lib/
+    # iconv is only used for the cli
+    #cp ${pkgs.libiconv.out}/lib/libiconv.dylib $out/lib/
 
     # remove the .la files
     find $out -name "*.la" -type f -delete
