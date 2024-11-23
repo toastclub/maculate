@@ -20,14 +20,7 @@ struct ContentView: View {
                 .onSubmit {
                     calculateExpression()
                 }
-                .textInputSuggestions {
-                    Text("The Fillmore")
-                        .textInputCompletion("1805 Geary Blvd, San Francisco")
-                    Text("The Catalyst")
-                        .textInputCompletion("1011 Pacific Ave, Santa Cruz")
-                    Text("Rio Theatre")
-                        .textInputCompletion("1205 Soquel Ave, Santa Cruz")
-                }
+
             
             /* Display the output */
             if !output.isEmpty {

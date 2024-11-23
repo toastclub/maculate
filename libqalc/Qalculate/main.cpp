@@ -9,6 +9,7 @@ struct Calculation
 
 EvaluationOptions evalops;
 PrintOptions printops;
+ParseOptions parseops;
 
 int init()
 {
@@ -37,7 +38,15 @@ Calculator *getCalculator()
 }
 
 // text input suggestions
-
+std::vector<std::string> suggest(std::string input)
+{
+    Calculator *calc = getCalculator();
+    MathStructure math = calc->parse(input);
+    Unit unit = calc->findMatchingUnit(math);
+    std::vector<std::string> suggestions;
+    suggestions.push_back(unit.name());
+    return suggestions;
+}
 
 Calculation calculate(std::string calculation)
 {
