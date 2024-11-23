@@ -22,17 +22,20 @@ pkgs.stdenv.mkDerivation rec {
 
   buildInputs = [
     pkgs.gettext
+    pkgs.libiconv
   ];
   propagatedBuildInputs = [
     pkgs.libxml2
     pkgs.mpfr
-    pkgs.icu
+    pkgs.pkgsStatic.icu
     pkgs.gmp
   ];
 
   configureFlags = [
     "--without-libcurl"
     "--enable-compiled-definitions"
+    "--disable-shared"
+    "--enable-static"
   ];
 
   # todo: this is preferable, but it causes configure: error: C compiler cannot create executables
@@ -72,17 +75,16 @@ pkgs.stdenv.mkDerivation rec {
     rm -rf $out/share/locale
     mkdir -p $out/lib
     for lib in ${pkgs.gmp.out}/lib/libgmp.dylib \
-           ${pkgs.mpfr.out}/lib/libmpfr.dylib \
-           ${pkgs.icu.out}/lib/libicuuc.dylib \
-           ${pkgs.icu.out}/lib/libicudata.dylib \
-           ${pkgs.icu.out}/lib/libicui18n.dylib \
-           ${pkgs.libxml2.out}/lib/libxml2.dylib \
-           ${pkgs.gettext.out}/lib/libintl.dylib; do
+        ${pkgs.mpfr.out}/lib/libmpfr.dylib \
+        ${pkgs.pkgsStatic.icu}/lib/libicuuc.a \
+        ${pkgs.pkgsStatic.icu}/lib/libicudata.a \
+        ${pkgs.pkgsStatic.icu}/lib/libicui18n.a \
+        ${pkgs.libxml2.out}/lib/libxml2.dylib \
+        ${pkgs.libiconv.out}/lib/libiconv.dylib \
+        ${pkgs.gettext.out}/lib/libintl.dylib; do
       target=$(readlink "$lib" || basename "$lib")
       cp "$lib" "$out/lib/$target"
     done
-    # iconv is only used for the cli
-    #cp ${pkgs.libiconv.out}/lib/libiconv.dylib $out/lib/
 
     # remove the .la files
     find $out -name "*.la" -type f -delete

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		209F2F2D2CF1779400D8E662 /* Qalculate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 202EDAA02CF0DE9700426644 /* Qalculate.framework */; };
-		209F2F2E2CF1779400D8E662 /* Qalculate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 202EDAA02CF0DE9700426644 /* Qalculate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,17 +45,6 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		209F2F2A2CF1744C00D8E662 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				209F2F2E2CF1779400D8E662 /* Qalculate.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -75,23 +63,32 @@
 			);
 			target = 202EDA9F2CF0DE9700426644 /* Qalculate */;
 		};
-		209F2FBB2CF1869B00D8E662 /* Exceptions for "Qalculate" folder in "maculate" target */ = {
+		209F2FCF2CF18AB600D8E662 /* Exceptions for "Qalculate" folder in "maculate" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				frameworks/GMP.xcframework,
+				frameworks/ICUicudata.xcframework,
+				frameworks/ICUicui18n.xcframework,
+				frameworks/ICUicuuc.xcframework,
+				frameworks/LibIconv.xcframework,
+				frameworks/LibIntl.xcframework,
 				frameworks/LibQalculate.xcframework,
+				frameworks/LibXML2.xcframework,
+				frameworks/MPFR.xcframework,
 			);
 			target = 202436BE2CF032AE00734E77 /* maculate */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		209F2FAA2CF1865800D8E662 /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Qalculate" target */ = {
+		209F2FD32CF18B1200D8E662 /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Qalculate" target */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			attributesByRelativePath = {
 				frameworks/GMP.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-				frameworks/ICU.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-				frameworks/ICUData.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-				frameworks/ICUI18N.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				frameworks/ICUicudata.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				frameworks/ICUicui18n.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				frameworks/ICUicuuc.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				frameworks/LibIconv.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
 				frameworks/LibIntl.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
 				frameworks/LibQalculate.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
 				frameworks/LibXML2.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
@@ -100,23 +97,14 @@
 			buildPhase = 200D86852CF13C79001FACD0 /* Embed Frameworks */;
 			membershipExceptions = (
 				frameworks/GMP.xcframework,
-				frameworks/ICU.xcframework,
-				frameworks/ICUData.xcframework,
-				frameworks/ICUI18N.xcframework,
+				frameworks/ICUicudata.xcframework,
+				frameworks/ICUicui18n.xcframework,
+				frameworks/ICUicuuc.xcframework,
+				frameworks/LibIconv.xcframework,
 				frameworks/LibIntl.xcframework,
 				frameworks/LibQalculate.xcframework,
 				frameworks/LibXML2.xcframework,
 				frameworks/MPFR.xcframework,
-			);
-		};
-		209F2FBC2CF1869B00D8E662 /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "maculate" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			attributesByRelativePath = {
-				frameworks/LibQalculate.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-			};
-			buildPhase = 209F2F2A2CF1744C00D8E662 /* Embed Frameworks */;
-			membershipExceptions = (
-				frameworks/LibQalculate.xcframework,
 			);
 		};
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
@@ -140,10 +128,9 @@
 		202EDAA12CF0DE9700426644 /* Qalculate */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				209F2FBB2CF1869B00D8E662 /* Exceptions for "Qalculate" folder in "maculate" target */,
-				209F2FBC2CF1869B00D8E662 /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "maculate" target */,
+				209F2FCF2CF18AB600D8E662 /* Exceptions for "Qalculate" folder in "maculate" target */,
 				202EDAAA2CF0DE9700426644 /* Exceptions for "Qalculate" folder in "Qalculate" target */,
-				209F2FAA2CF1865800D8E662 /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Qalculate" target */,
+				209F2FD32CF18B1200D8E662 /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Qalculate" target */,
 			);
 			explicitFileTypes = {
 				main.hpp = sourcecode.cpp.h;
@@ -244,7 +231,6 @@
 				202436BB2CF032AE00734E77 /* Sources */,
 				202436BC2CF032AE00734E77 /* Frameworks */,
 				202436BD2CF032AE00734E77 /* Resources */,
-				209F2F2A2CF1744C00D8E662 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

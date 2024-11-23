@@ -25,7 +25,7 @@ find $FRAMEWORKS_DIR -type d -exec chmod +w {} \;
 # qalculate
 # rename for convenience
 xcodebuild -create-xcframework \
-    -library result/lib/libqalculate.23.dylib \
+    -library result/lib/libqalculate.a \
     -headers result/include/libqalculate/ \
     -output $FRAMEWORKS_DIR/LibQalculate.xcframework
 # gmp       headers: REQUIRED
@@ -43,26 +43,19 @@ xcodebuild -create-xcframework \
     -library result/lib/libxml2.2.dylib \
     -output $FRAMEWORKS_DIR/LibXML2.xcframework
 #libiconv   headers: NONE NOT NEEDED
-#xcodebuild -create-xcframework -library result/lib/libiconv.dylib -output $FRAMEWORKS_DIR/LibIconv.xcframework
+xcodebuild -create-xcframework \
+    -library result/lib/libiconv.2.dylib \
+    -output $FRAMEWORKS_DIR/LibIconv.xcframework
 #libintl    headers: NOT NEEDED
 xcodebuild -create-xcframework \
     -library result/lib/libintl.8.dylib \
     -output $FRAMEWORKS_DIR/LibIntl.xcframework
 # icu       headers: NONE
-xcodebuild -create-xcframework \
-    -library result/lib/libicuuc.74.2.dylib \
-    -output $FRAMEWORKS_DIR/ICU.xcframework
-xcodebuild -create-xcframework \
-    -library result/lib/libicudata.74.2.dylib \
-    -output $FRAMEWORKS_DIR/ICUData.xcframework
-xcodebuild -create-xcframework \
-    -library result/lib/libicui18n.74.2.dylib \
-    -output $FRAMEWORKS_DIR/ICUI18N.xcframework
-# libc++    headers: REQUIRED
-xcodebuild -create-xcframework \
-    -library result/lib/libc++.1.dylib \
-    -headers result/include/c++/v1/ \
-    -output $FRAMEWORKS_DIR/LibCxx.xcframework
+for lib in icuuc icudata icui18n; do
+    xcodebuild -create-xcframework \
+        -library result/lib/lib${lib}.a \
+        -output $FRAMEWORKS_DIR/ICU${lib}.xcframework
+done
 
 ###################
 #  Code Signing   #
@@ -70,7 +63,11 @@ xcodebuild -create-xcframework \
 
 # find all dylibs and sign them.
 # hardcoded to Toastcat LLC. You can change this to your own certificate.
-find $FRAMEWORKS_DIR -name "*.dylib" -exec codesign --force --timestamp --sign "Apple Distribution: Toastcat LLC (APTCP6Z8HA)" {} \;
+find $FRAMEWORKS_DIR -name "*.dylib" -exec codesign --force \
+    --timestamp --sign "Apple Distribution: Toastcat LLC (APTCP6Z8HA)" {} \;
+
+find $FRAMEWORKS_DIR -name "*.a" -exec chmod +w {} \; -exec codesign --force \
+    --timestamp --sign "Apple Distribution: Toastcat LLC (APTCP6Z8HA)" {} \;
 
 ###################
 #   Post-Process  #
@@ -78,6 +75,7 @@ find $FRAMEWORKS_DIR -name "*.dylib" -exec codesign --force --timestamp --sign "
 
 # qalculate fixups
 find $FRAMEWORKS_DIR -type d -exec chmod +w {} \;
+# give +w on all .a files
 find $FRAMEWORKS_DIR/LibQalculate.xcframework -name "*.h" \
     -exec sed -i '' 's/<libqalculate\//</g' {} \;
 mv $FRAMEWORKS_DIR/LibQalculate.xcframework/macos-arm64/Headers/qalculate.h $FRAMEWORKS_DIR/LibQalculate.xcframework/macos-arm64/Headers/LibQalculate.h

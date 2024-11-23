@@ -11,3 +11,5 @@ Maculate is divided into two parts: the Swift frontend, and the C++ backend. The
 Due to the fact the backend was intended to be built on Linux, the backend is built using nix, which creates a reproducible build environment.
 
 After nix has been installed, run `./build.sh` inside the libqalc directory. The build script is genuinely disgusting, and one thing you'll need to do is make it not reference Toastcat LLC. After doing that, the frameworks must be enabled in Xcode, and the project should build.
+
+Under certain circumstances, we may not be able to provide assistance in building the project.
