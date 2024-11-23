@@ -23,16 +23,24 @@ struct ContentView: View {
             
             /* Display the output */
             if !output.isEmpty {
-                Text("Answer is: \(output) 🤡")
+                Text("Answer is: \(output)")
             }
         }
         .padding()
     }
     
+    private func pickRandomEmoji() -> String {
+        let emojis = ["🤡", "🤓", "💀", "🫵"]
+        return emojis.randomElement()!
+    }
+    
     private func calculateExpression() {
         let result = calculate(std.string(text))
         // Convert the result back to a Swift String
-        output = String(result)
+
+        let attributed = try! NSAttributedString(data: String(result.output).data(using: .unicode)!, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)
+
+        output = attributed.string + " " + pickRandomEmoji()
         
     }
 }

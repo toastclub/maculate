@@ -21,9 +21,7 @@ struct Calculation
 EvaluationOptions evalops;
 PrintOptions printops;
 
-Calculation
-calculate(std::string calculation)
-{
+Calculation calculate(std::string calculation) {
     Calculator *calc = getCalculator();
     calculation = calc->unlocalizeExpression(calculation);
     std::string parsed_str;

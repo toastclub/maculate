@@ -3,10 +3,14 @@
 #include <string>
 using std::string;
 
-#include <LibQalculate.h>
+struct Calculation
+{
+    std::string input;
+    std::string output;
+    std::string messages;
+};
 
-Calculator *getCalculator();
 std::string qalc_gnuplot_data_dir();
-std::string calculate(std::string calculation);
+Calculation calculate(std::string calculation);
 
 #endif // MAIN_H
