@@ -9,56 +9,61 @@ import SwiftUI
 
 func styledOutput(_ text: String) -> AttributedString {
     var attributedString = AttributedString()
-    
-    var currentIndex = text.startIndex
-    
-    while currentIndex < text.endIndex {
-        // Find the next tag
-        if let tagStart = text.range(of: "<", range: currentIndex..<text.endIndex),
-           let tagEnd = text.range(of: ">", range: tagStart.upperBound..<text.endIndex) {
-            
-            // Append normal text before the tag
-            if currentIndex < tagStart.lowerBound {
-                attributedString.append(AttributedString(text[currentIndex..<tagStart.lowerBound]))
-            }
-            
-            // Handle specific tags
-            let tagName = text[tagStart.upperBound..<tagEnd.lowerBound]
-            if tagName == "i" {
-                // Find the corresponding closing tag
-                if let closeTagStart = text.range(of: "</i>", range: tagEnd.upperBound..<text.endIndex) {
-                    let italicTextRange = tagEnd.upperBound..<closeTagStart.lowerBound
-                    var italicText = AttributedString(text[italicTextRange])
-                    italicText.font = .system(size: 16, design: .serif).italic()
-                    attributedString.append(italicText)
-                    
-                    currentIndex = closeTagStart.upperBound // Move past the closing tag
-                    continue
+
+    var tagHandlers: [String: (Substring) -> AttributedString] = [:]
+
+
+    func processText(_ text: Substring) -> AttributedString {
+        var result = AttributedString()
+        var currentIndex = text.startIndex
+
+        while currentIndex < text.endIndex {
+            // Find the next tag
+            if let tagStart = text.range(of: "<", range: currentIndex..<text.endIndex),
+               let tagEnd = text.range(of: ">", range: tagStart.upperBound..<text.endIndex) {
+
+                // Append normal text before the tag
+                if currentIndex < tagStart.lowerBound {
+                    result.append(AttributedString(text[currentIndex..<tagStart.lowerBound]))
                 }
-            } else if tagName == "sup" {
-                // Find the corresponding closing tag
-                if let closeTagStart = text.range(of: "</sup>", range: tagEnd.upperBound..<text.endIndex) {
-                    let superscriptTextRange = tagEnd.upperBound..<closeTagStart.lowerBound
-                    var superscriptText = AttributedString(text[superscriptTextRange])
-                    //superscriptText.font = .systemFont(ofSize: UIFont.systemFontSize)
-                    superscriptText.baselineOffset = CGFloat(14) * 0.3 // Adjust baseline offset
-                    attributedString.append(superscriptText)
-                    
-                    currentIndex = closeTagStart.upperBound // Move past the closing tag
-                    continue
+
+                // Determine the tag name
+                let tagName = text[tagStart.upperBound..<tagEnd.lowerBound]
+
+                if let closeTagStart = text.range(of: "</\(tagName)>", range: tagEnd.upperBound..<text.endIndex),
+                   let handler = tagHandlers[String(tagName)] {
+                    // Handle the tag using its handler
+                    let tagContent = text[tagEnd.upperBound..<closeTagStart.lowerBound]
+                    result.append(handler(tagContent))
+                    currentIndex = closeTagStart.upperBound
+                } else {
+                    // Skip unsupported or malformed tags
+                    currentIndex = tagEnd.upperBound
                 }
+            } else {
+                // No more tags; append remaining text
+                result.append(AttributedString(text[currentIndex..<text.endIndex]))
+                break
             }
-            
-            // Skip unsupported tags
-            currentIndex = tagEnd.upperBound
-        } else {
-            // No more tags; append remaining text
-            attributedString.append(AttributedString(text[currentIndex..<text.endIndex]))
-            break
         }
+        return result
     }
 
-    
+    tagHandlers = [
+        "i": { content in
+            var styledText = processText(content) // Recursively process content
+            styledText.font = .system(size: 16, design: .serif).italic()
+            return styledText
+        },
+        "sup": { content in
+            var styledText = processText(content) // Recursively process content
+            styledText.baselineOffset = 6 // Adjust as needed for superscript
+            styledText.font = .system(size: 14)
+            return styledText
+        }
+    ]
+
+    attributedString = processText(text[...])
     return attributedString
 }
 
@@ -71,6 +76,7 @@ struct OutputView: View {
                 .padding([.leading,.trailing])
             Text(styledOutput(item.result))
                 .padding([.leading,.trailing])
+                .frame(maxWidth: .infinity, alignment: .trailing)
             Divider()
         }
         .frame(maxWidth: .infinity, alignment: .leading)

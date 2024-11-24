@@ -20,7 +20,9 @@ struct ExpressionFieldView: View {
     
     var body: some View {
         TextField("Enter an expression", text: $text)
-            .padding()
+            .padding(.top,30)
+            .padding(.bottom,7.5)
+            .padding(.horizontal)
             .textFieldStyle(.plain)
             .focusEffectDisabled()
             .introspect(.textField, on: .macOS(.v14,.v15)) { textView in

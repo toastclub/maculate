@@ -21,7 +21,7 @@ struct ContentView: View {
     @State var outputs: [HistoryItem] = []
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             ExpressionFieldView(text: $text, output: $output)
                 .onChange(of: output) {
                     withAnimation(.bouncy) {
@@ -29,14 +29,15 @@ struct ContentView: View {
                     }
                     text = ""
                 }
+            Divider().padding(0)
             ScrollView {
                 LazyVStack {
                     ForEach(Array(outputs.reversed()), id: \.id) { item in
                         OutputView(item: item)
                     }
-                    
-                }
+                }.padding(.top,5)
             }
+            .background(Color(NSColor.windowBackgroundColor).opacity(0.5))
         }
         .frame(
             minWidth: 0,

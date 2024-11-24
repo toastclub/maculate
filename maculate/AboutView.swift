@@ -17,14 +17,16 @@ struct AboutView: View {
                 .frame(width: 128, height: 128)
             // app name
             Text("Maculate")
-                .font(.title)
+                .font(.system(.title, design: .serif,weight: .bold))
             // app version
-            Text("Version 1.0")
+            Text("1.0")
+                .font(.system(.body, design: .rounded))
             
             // app description
-            Text("Be the change ❤️")
+            Text("Mathematics is the music of reason")
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
+                .font(.system(.body).italic())
                 .padding(5)
             
             // app credits
@@ -32,6 +34,7 @@ struct AboutView: View {
                 .font(.caption)
             Text("With Special Thanks to GMP, MPFR and the Qalculate! Project")
                 .font(.caption)
+                .padding(.bottom)
         }.frame(minWidth: 300, minHeight: 300).padding()
     }
 }
