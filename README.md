@@ -22,8 +22,8 @@ We generally regard the codebase as being well—written and documented, so it c
 
 ## Support Matrix
 
-|                     | macOS | iOS | iPadOS | Notes                   |
-| ------------------- | ----- | --- | ------ | ----------------------- |
-| macOS 15 / iOS 18   | ✅    | ⏱️  | ⏱️     |                         |
-| macOS 14 / iOS 17   | ⚠️    | ⏱️  | ⏱️     | No Plots, No Completion |
-| macOS <14 / iOS <17 | ❌    | ❌  | ❌     | Never Supported         |
+|                         | macOS | iOS | iPadOS | Notes                   |
+| ----------------------- | ----- | --- | ------ | ----------------------- |
+| macOS 15 <br/> iOS 18   | ✅    | ⏱️  | ⏱️     |                         |
+| macOS 14 <br/> iOS 17   | ⚠️    | ⏱️  | ⏱️     | No Plots, No Completion |
+| macOS <14 <br/> iOS <17 | ❌    | ❌  | ❌     | Never Supported         |
