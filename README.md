@@ -19,3 +19,11 @@ Under certain circumstances, we may not be able to provide assistance in buildin
 Maculate is open source, but the source code is not under any sort of warranty. Contributions are generally welcome, though be aware that you will not be compensated for them.
 
 We generally regard the codebase as being well—written and documented, so it could serve as a good basis to libqalculate.
+
+## Support Matrix
+
+|         | macOS | iOS | iPadOS | Notes                   |
+| ------- | ----- | --- | ------ | ----------------------- |
+| 15/18   | ✅    | ⏱️  | ⏱️     |                         |
+| 14/17   | ⚠️    | ⏱️  | ⏱️     | No Plots, No Completion |
+| <14/<17 | ❌    | ❌  | ❌     |                         |
