@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		208C8CDB2CF23BAA002551E5 /* Qalculate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 202EDAA02CF0DE9700426644 /* Qalculate.framework */; };
 		208C8CDC2CF23BAA002551E5 /* Qalculate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 202EDAA02CF0DE9700426644 /* Qalculate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		20FD15802CF2ED640059D150 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 20FD157F2CF2ED640059D150 /* SwiftUIIntrospect */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -157,6 +158,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20FD15802CF2ED640059D150 /* SwiftUIIntrospect in Frameworks */,
 				208C8CDB2CF23BAA002551E5 /* Qalculate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -255,6 +257,7 @@
 			);
 			name = maculate;
 			packageProductDependencies = (
+				20FD157F2CF2ED640059D150 /* SwiftUIIntrospect */,
 			);
 			productName = maculate;
 			productReference = 202436BF2CF032AE00734E77 /* maculate.app */;
@@ -365,6 +368,9 @@
 			);
 			mainGroup = 202436B62CF032AE00734E77;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				20FD157E2CF2ED640059D150 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 202436C02CF032AE00734E77 /* Products */;
 			projectDirPath = "";
@@ -862,6 +868,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		20FD157E2CF2ED640059D150 /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/swiftui-introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		20FD157F2CF2ED640059D150 /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 20FD157E2CF2ED640059D150 /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
+			productName = SwiftUIIntrospect;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 202436B72CF032AE00734E77 /* Project object */;
 }

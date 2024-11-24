@@ -51,22 +51,17 @@ Completions getCompletions(std::string input)
             // Check if it's a MathFunction
             /*if (auto *mathFunction = dynamic_cast<MathFunction *>(c))
             {
-                // Handle MathFunction-specific logic
-                completions.push_back({mathFunction->name(),
-                                       mathFunction->description() + " (additional info: " + mathFunction->specialMethod() + ")",
-                                       type});
-                continue;
             }*/
 
             // Handle generic ExpressionItem logic
-            completions.push_back({c->name(), c->description(), type});
+            completions.push_back({c->name(), c->title(), type});
         }
     };
 
     addCompletions(calc->functions, CompletionType::FUNCTION);
     addCompletions(calc->variables, CompletionType::VARIABLE);
     addCompletions(calc->units, CompletionType::UNIT);
-    
+
     return completions;
 }
 
@@ -89,7 +84,7 @@ Calculation calculate(std::string calculation)
                                                                                                     : "Error";
         ret.messages += severity + ": " + message->message() + "\n";
     }
-    
+
     return ret;
 }
 

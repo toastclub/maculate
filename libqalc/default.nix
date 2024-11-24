@@ -32,8 +32,10 @@ pkgs.stdenv.mkDerivation rec {
   ];
 
   configureFlags = [
+    # we should fetch in swift
     "--without-libcurl"
     "--enable-compiled-definitions"
+    # to avoid libcpp dylib
     "--disable-shared"
     "--enable-static"
   ];
@@ -47,6 +49,7 @@ pkgs.stdenv.mkDerivation rec {
     intltoolize -f
   '';
 
+  # this code is not relevant
   patchPhase = ''
     substituteInPlace libqalculate/Calculator-plot.cc \
       --replace 'commandline = "gnuplot"' 'commandline = "${pkgs.gnuplot}/bin/gnuplot"' \
@@ -71,6 +74,7 @@ pkgs.stdenv.mkDerivation rec {
       fi
     done
 
+    # purge the docs, which we have no use for
     rm -rf $out/share/doc
     rm -rf $out/share/locale
     mkdir -p $out/lib
