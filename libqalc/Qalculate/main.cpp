@@ -1,11 +1,9 @@
-#include "LibQalculate.h"
+// The purpose of this library is to delegate all unsafe operations to C++,
+// and keep the processing of safe data in Swift.
 
-struct Calculation
-{
-    std::string input;
-    std::string output;
-    std::string messages;
-};
+#include "LibQalculate.h"
+#include "main.hpp"
+#include <iostream>
 
 EvaluationOptions evalops;
 PrintOptions printops;
@@ -38,14 +36,38 @@ Calculator *getCalculator()
 }
 
 // text input suggestions
-std::vector<std::string> suggest(std::string input)
+Completions getCompletions(std::string input)
 {
     Calculator *calc = getCalculator();
-    MathStructure math = calc->parse(input);
-    Unit unit = calc->findMatchingUnit(math);
-    std::vector<std::string> suggestions;
-    suggestions.push_back(unit.name());
-    return suggestions;
+    Completions completions;
+
+    auto addCompletions = [&](auto &collection, CompletionType type)
+    {
+        for (auto &c : collection)
+        {
+            if (c->name().find(input) != 0)
+                continue;
+
+            // Check if it's a MathFunction
+            /*if (auto *mathFunction = dynamic_cast<MathFunction *>(c))
+            {
+                // Handle MathFunction-specific logic
+                completions.push_back({mathFunction->name(),
+                                       mathFunction->description() + " (additional info: " + mathFunction->specialMethod() + ")",
+                                       type});
+                continue;
+            }*/
+
+            // Handle generic ExpressionItem logic
+            completions.push_back({c->name(), c->description(), type});
+        }
+    };
+
+    addCompletions(calc->functions, CompletionType::FUNCTION);
+    addCompletions(calc->variables, CompletionType::VARIABLE);
+    addCompletions(calc->units, CompletionType::UNIT);
+    
+    return completions;
 }
 
 Calculation calculate(std::string calculation)
@@ -67,7 +89,7 @@ Calculation calculate(std::string calculation)
                                                                                                     : "Error";
         ret.messages += severity + ": " + message->message() + "\n";
     }
-
+    
     return ret;
 }
 

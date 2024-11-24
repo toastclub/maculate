@@ -15,11 +15,25 @@ struct ContentView: View {
     var body: some View {
         VStack {
             /* Create a text field to input the expression */
-            TextField("Enter an expression", text: $text)
-                .padding()
-                .onSubmit {
-                    calculateExpression()
-                }
+            if #available(macOS 15.0, *) {
+                TextField("Enter an expression", text: $text)
+                    .padding()
+                    .onSubmit {
+                        calculateExpression()
+                    }
+                    .textInputSuggestions {
+                        
+                    }
+                    .onChange(of: text) { _ in
+                        let comp = getCompletions(std.string(text))
+                        for completion in comp {
+                            print(completion)
+                        }
+                    }
+            } else {
+                // Fallback on earlier versions
+            }
+            
 
             
             /* Display the output */
