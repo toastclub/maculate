@@ -32,19 +32,7 @@ struct ContentView: View {
             ScrollView {
                 LazyVStack {
                     ForEach(Array(outputs.reversed()), id: \.id) { item in
-                        VStack(alignment: .leading) {
-                            Text(item.expression)
-                                .fontDesign(.monospaced)
-                                .padding([.leading,.trailing])
-                            Text(item.result)
-                                .padding([.leading,.trailing])
-                            // use first because the list is reversed
-                            if item.id != outputs.first?.id {
-                                Divider()
-                            }
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .transition(.move(edge: .top))
+                        OutputView(item: item)
                     }
                     
                 }

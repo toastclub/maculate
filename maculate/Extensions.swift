@@ -12,7 +12,7 @@ enum OperatingSystem {
     case iOS
     case tvOS
     case watchOS
-    
+
 #if os(macOS)
     static let current = macOS
 #elseif os(iOS)
@@ -22,7 +22,7 @@ enum OperatingSystem {
 #elseif os(watchOS)
     static let current = watchOS
 #else
-#error("Unsupported platform")
+#error("Wow a new Apple OS!")
 #endif
 }
 
@@ -35,7 +35,7 @@ extension View {
             self
         }
     }
-    
+
     @ViewBuilder
     func ifOS<Content: View>(
         _ operatingSystems: OperatingSystem...,
