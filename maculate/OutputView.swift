@@ -74,9 +74,11 @@ struct OutputView: View {
             Text(item.expression)
                 .fontDesign(.monospaced)
                 .padding([.leading,.trailing])
+                .textSelection(.enabled)
             Text(styledOutput(item.result))
                 .padding([.leading,.trailing])
                 .frame(maxWidth: .infinity, alignment: .trailing)
+                .textSelection(.enabled)
             Divider()
         }
         .frame(maxWidth: .infinity, alignment: .leading)

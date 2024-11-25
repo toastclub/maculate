@@ -51,11 +51,12 @@ Completions getCompletions(std::string input)
             // Check if it's a MathFunction
             if (auto *mathFunction = dynamic_cast<MathFunction *>(c))
             {
+                //Argument *arg = mathFunction->getArgumentDefinition(<#size_t index#>)
                 completions.push_back({c->name() + "()", c->title(), type});
+            } else {
+                // Handle generic ExpressionItem logic
+                completions.push_back({c->name(), c->title(), type});
             }
-
-            // Handle generic ExpressionItem logic
-            completions.push_back({c->name(), c->title(), type});
         }
     };
 

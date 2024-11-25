@@ -43,7 +43,8 @@ struct ExpressionFieldView: View {
                 if #available(macOS 15.0, *) {
                     $0.textInputSuggestions {
                         if let relevantText = relevantText {
-                            ForEach(getCompletions(std.string(relevantText)), id: \.name) { suggestion in
+                            let completions = getCompletions(std.string(relevantText)).sorted { $0.name.count < $1.name.count }
+                            ForEach(completions, id: \.name) { suggestion in
                                 let theoreticalChange = self.theoreticalChange(completion: String(suggestion.name))
                                 HStack {
                                     Text(String(suggestion.name))

@@ -37,7 +37,7 @@ struct ContentView: View {
                     }
                 }.padding(.top,5)
             }
-            .background(Color(NSColor.windowBackgroundColor).opacity(0.5))
+            .background(Color(NSColor(named: "BlackNWhite")!).opacity(0.5))
         }
         .frame(
             minWidth: 0,
