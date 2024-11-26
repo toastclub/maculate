@@ -37,16 +37,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		200D86852CF13C79001FACD0 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		208C8CDD2CF23BAA002551E5 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -61,7 +51,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		202436BF2CF032AE00734E77 /* maculate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = maculate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		202436BF2CF032AE00734E77 /* Maculate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Maculate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		202436D02CF032B000734E77 /* maculateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = maculateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		202436DA2CF032B000734E77 /* maculateUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = maculateUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		202EDAA02CF0DE9700426644 /* Qalculate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Qalculate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,51 +66,7 @@
 			);
 			target = 202EDA9F2CF0DE9700426644 /* Qalculate */;
 		};
-		209F2FCF2CF18AB600D8E662 /* Exceptions for "Qalculate" folder in "maculate" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				frameworks/GMP.xcframework,
-				frameworks/ICUicudata.xcframework,
-				frameworks/ICUicui18n.xcframework,
-				frameworks/ICUicuuc.xcframework,
-				frameworks/LibIconv.xcframework,
-				frameworks/LibIntl.xcframework,
-				frameworks/LibQalculate.xcframework,
-				frameworks/LibXML2.xcframework,
-				frameworks/MPFR.xcframework,
-			);
-			target = 202436BE2CF032AE00734E77 /* maculate */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		209F2FD32CF18B1200D8E662 /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Qalculate" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			attributesByRelativePath = {
-				frameworks/GMP.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-				frameworks/ICUicudata.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-				frameworks/ICUicui18n.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-				frameworks/ICUicuuc.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-				frameworks/LibIconv.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-				frameworks/LibIntl.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-				frameworks/LibQalculate.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-				frameworks/LibXML2.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-				frameworks/MPFR.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-			};
-			buildPhase = 200D86852CF13C79001FACD0 /* Embed Frameworks */;
-			membershipExceptions = (
-				frameworks/GMP.xcframework,
-				frameworks/ICUicudata.xcframework,
-				frameworks/ICUicui18n.xcframework,
-				frameworks/ICUicuuc.xcframework,
-				frameworks/LibIconv.xcframework,
-				frameworks/LibIntl.xcframework,
-				frameworks/LibQalculate.xcframework,
-				frameworks/LibXML2.xcframework,
-				frameworks/MPFR.xcframework,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		202436C12CF032AE00734E77 /* maculate */ = {
@@ -141,9 +87,7 @@
 		202EDAA12CF0DE9700426644 /* Qalculate */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				209F2FCF2CF18AB600D8E662 /* Exceptions for "Qalculate" folder in "maculate" target */,
 				202EDAAA2CF0DE9700426644 /* Exceptions for "Qalculate" folder in "Qalculate" target */,
-				209F2FD32CF18B1200D8E662 /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Qalculate" target */,
 			);
 			explicitFileTypes = {
 				main.hpp = sourcecode.cpp.h;
@@ -202,7 +146,7 @@
 		202436C02CF032AE00734E77 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				202436BF2CF032AE00734E77 /* maculate.app */,
+				202436BF2CF032AE00734E77 /* Maculate.app */,
 				202436D02CF032B000734E77 /* maculateTests.xctest */,
 				202436DA2CF032B000734E77 /* maculateUITests.xctest */,
 				202EDAA02CF0DE9700426644 /* Qalculate.framework */,
@@ -238,9 +182,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		202436BE2CF032AE00734E77 /* maculate */ = {
+		202436BE2CF032AE00734E77 /* Maculate */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 202436E42CF032B000734E77 /* Build configuration list for PBXNativeTarget "maculate" */;
+			buildConfigurationList = 202436E42CF032B000734E77 /* Build configuration list for PBXNativeTarget "Maculate" */;
 			buildPhases = (
 				202436BB2CF032AE00734E77 /* Sources */,
 				202436BC2CF032AE00734E77 /* Frameworks */,
@@ -255,12 +199,12 @@
 			fileSystemSynchronizedGroups = (
 				202436C12CF032AE00734E77 /* maculate */,
 			);
-			name = maculate;
+			name = Maculate;
 			packageProductDependencies = (
 				20FD157F2CF2ED640059D150 /* SwiftUIIntrospect */,
 			);
 			productName = maculate;
-			productReference = 202436BF2CF032AE00734E77 /* maculate.app */;
+			productReference = 202436BF2CF032AE00734E77 /* Maculate.app */;
 			productType = "com.apple.product-type.application";
 		};
 		202436CF2CF032B000734E77 /* maculateTests */ = {
@@ -317,7 +261,6 @@
 				202EDA9C2CF0DE9700426644 /* Sources */,
 				202EDA9D2CF0DE9700426644 /* Frameworks */,
 				202EDA9E2CF0DE9700426644 /* Resources */,
-				200D86852CF13C79001FACD0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -376,7 +319,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				202436BE2CF032AE00734E77 /* maculate */,
+				202436BE2CF032AE00734E77 /* Maculate */,
 				202436CF2CF032B000734E77 /* maculateTests */,
 				202436D92CF032B000734E77 /* maculateUITests */,
 				202EDA9F2CF0DE9700426644 /* Qalculate */,
@@ -449,12 +392,12 @@
 /* Begin PBXTargetDependency section */
 		202436D22CF032B000734E77 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 202436BE2CF032AE00734E77 /* maculate */;
+			target = 202436BE2CF032AE00734E77 /* Maculate */;
 			targetProxy = 202436D12CF032B000734E77 /* PBXContainerItemProxy */;
 		};
 		202436DC2CF032B000734E77 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 202436BE2CF032AE00734E77 /* maculate */;
+			target = 202436BE2CF032AE00734E77 /* Maculate */;
 			targetProxy = 202436DB2CF032B000734E77 /* PBXContainerItemProxy */;
 		};
 		209F2F302CF1779400D8E662 /* PBXTargetDependency */ = {
@@ -601,6 +544,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -612,7 +556,7 @@
 					"$(PROJECT_DIR)/libqalc/result/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.toastcat.maculate.maculate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -638,6 +582,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -649,7 +594,7 @@
 					"$(PROJECT_DIR)/libqalc/result/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.toastcat.maculate.maculate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -756,10 +701,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/libqalc/result/lib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c++";
@@ -780,9 +722,7 @@
 			buildSettings = {
 				ARCHS = arm64;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
-				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
@@ -800,10 +740,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/libqalc/result/lib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c++";
@@ -831,7 +768,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		202436E42CF032B000734E77 /* Build configuration list for PBXNativeTarget "maculate" */ = {
+		202436E42CF032B000734E77 /* Build configuration list for PBXNativeTarget "Maculate" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				202436E52CF032B000734E77 /* Debug */,

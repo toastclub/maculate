@@ -2,13 +2,13 @@
 
 pkgs.stdenv.mkDerivation rec {
   pname = "libqalculate";
-  version = "5.1.1";
+  version = "5.3.0";
 
   src = pkgs.fetchFromGitHub {
     owner = "qalculate";
     repo = "libqalculate";
     rev = "v${version}";
-    hash = "sha256-cmH92gdQ+fmtOLgx5ibKqLZaQFzx2z+GuXhR62dtftk=";
+    hash = "sha256-YNw6oFjrbYifIlAF2fz+htT1PIk9oEn7nBrnIZIR7DE=";
   };
 
   nativeBuildInputs = [
@@ -26,10 +26,10 @@ pkgs.stdenv.mkDerivation rec {
   ];
   propagatedBuildInputs = [
     pkgs.libxml2
-    pkgs.mpfr
+    pkgs.pkgsStatic.mpfr
     # we build icu statically to avoid dynamic linking to libcpp
     pkgs.pkgsStatic.icu
-    pkgs.gmp
+    pkgs.pkgsStatic.gmp
   ];
 
   configureFlags = [
@@ -79,8 +79,8 @@ pkgs.stdenv.mkDerivation rec {
     rm -rf $out/share/doc
     rm -rf $out/share/locale
     mkdir -p $out/lib
-    for lib in ${pkgs.gmp.out}/lib/libgmp.dylib \
-        ${pkgs.mpfr.out}/lib/libmpfr.dylib \
+    for lib in ${pkgs.pkgsStatic.gmp}/lib/libgmp.a \
+        ${pkgs.pkgsStatic.mpfr}/lib/libmpfr.a \
         ${pkgs.pkgsStatic.icu}/lib/libicuuc.a \
         ${pkgs.pkgsStatic.icu}/lib/libicudata.a \
         ${pkgs.pkgsStatic.icu}/lib/libicui18n.a \

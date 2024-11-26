@@ -30,12 +30,12 @@ xcodebuild -create-xcframework \
     -output $FRAMEWORKS_DIR/LibQalculate.xcframework
 # gmp       headers: REQUIRED
 xcodebuild -create-xcframework \
-    -library result/lib/libgmp.10.dylib \
+    -library result/lib/libgmp.a \
     -headers result/include/gmp.h \
     -output $FRAMEWORKS_DIR/GMP.xcframework
 # mpfr      headers: REQUIRED
 xcodebuild -create-xcframework \
-    -library result/lib/libmpfr.6.dylib \
+    -library result/lib/libmpfr.a \
     -headers result/include/mpfr.h \
     -output $FRAMEWORKS_DIR/MPFR.xcframework
 # libxml2   headers: NOT needed
@@ -64,10 +64,10 @@ done
 # find all dylibs and sign them.
 # hardcoded to Toastcat LLC. You can change this to your own certificate.
 find $FRAMEWORKS_DIR -name "*.dylib" -exec codesign --force \
-    --timestamp --sign "Apple Distribution: Toastcat LLC (APTCP6Z8HA)" {} \;
+    --timestamp --sign "Apple Development: Evan Boehs (668LYMH4FH)" {} \;
 
 find $FRAMEWORKS_DIR -name "*.a" -exec chmod +w {} \; -exec codesign --force \
-    --timestamp --sign "Apple Distribution: Toastcat LLC (APTCP6Z8HA)" {} \;
+    --timestamp --sign "Apple Development: Evan Boehs (668LYMH4FH)" {} \;
 
 ###################
 #   Post-Process  #
