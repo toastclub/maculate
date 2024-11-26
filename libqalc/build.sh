@@ -61,12 +61,15 @@ done
 #  Code Signing   #
 ###################
 
+# when the libraries are built, they are built inside nix's directories,
+# and they are assumed to remain there, but at runtime on different machines
+# they won't be. So we need to patch the dylibs to have rpaths relative to the app
+# todo: surely this can be done as part of the build process?
 find "$FRAMEWORKS_DIR" -name "*.dylib" | while read -r dylib; do
     # change the install name to be relative to the rpath
     # instead of what it was at build time
     install_name_tool -id "@rpath/$(basename "$dylib")" "$dylib"
     # change the dependencies to be relative to the rpath, so that this works recursively
-    # otool lists, tail removes unintended lines, awk gets rid of the indent, grep filters out system libraries
     dependencies=$(otool -L "$dylib" | tail -n +2 | awk '{print $1}' | grep "/nix")
     for dep in $dependencies; do
         dep_basename=$(basename "$dep")
