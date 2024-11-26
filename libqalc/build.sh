@@ -62,12 +62,14 @@ done
 ###################
 
 find "$FRAMEWORKS_DIR" -name "*.dylib" | while read -r dylib; do
+    # change the install name to be relative to the rpath
+    # instead of what it was at build time
     install_name_tool -id "@rpath/$(basename "$dylib")" "$dylib"
-    dependencies=$(otool -L "$dylib" | tail -n +2 | awk '{print $1}' | grep "$FRAMEWORKS_DIR")
+    # change the dependencies to be relative to the rpath, so that this works recursively
+    # otool lists, tail removes unintended lines, awk gets rid of the indent, grep filters out system libraries
+    dependencies=$(otool -L "$dylib" | tail -n +2 | awk '{print $1}' | grep "/nix")
     for dep in $dependencies; do
         dep_basename=$(basename "$dep")
-        echo "  Updating dependency $dep to @rpath/$dep_basename..."
-        # Update each dependency reference to @rpath/{filename}.
         install_name_tool -change "$dep" "@rpath/$dep_basename" "$dylib"
     done
 done

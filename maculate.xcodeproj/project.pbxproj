@@ -66,7 +66,7 @@
 			);
 			target = 202EDA9F2CF0DE9700426644 /* Qalculate */;
 		};
-		2090F1CA2CF67AC400BA451F /* Exceptions for "Qalculate" folder in "Maculate" target */ = {
+		2090F1F02CF6885C00BA451F /* Exceptions for "Qalculate" folder in "Maculate" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				frameworks/GMP.xcframework,
@@ -84,7 +84,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		2090F1CB2CF67AC400BA451F /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Maculate" target */ = {
+		2090F1F12CF6885C00BA451F /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Maculate" target */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			attributesByRelativePath = {
 				frameworks/GMP.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
@@ -131,8 +131,8 @@
 		202EDAA12CF0DE9700426644 /* Qalculate */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				2090F1CA2CF67AC400BA451F /* Exceptions for "Qalculate" folder in "Maculate" target */,
-				2090F1CB2CF67AC400BA451F /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Maculate" target */,
+				2090F1F02CF6885C00BA451F /* Exceptions for "Qalculate" folder in "Maculate" target */,
+				2090F1F12CF6885C00BA451F /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Maculate" target */,
 				202EDAAA2CF0DE9700426644 /* Exceptions for "Qalculate" folder in "Qalculate" target */,
 			);
 			explicitFileTypes = {
