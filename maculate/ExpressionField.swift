@@ -10,8 +10,9 @@ import Qalculate
 import SwiftUIIntrospect
 
 struct ExpressionFieldView: View {
-    @Binding var text: String
-    @Binding var output: String
+    @Binding var outputs: [HistoryItem]
+
+    @State private var text: String = ""
     #if os(macOS)
     @State private var NSTextField: NSTextField?
     #endif
@@ -20,8 +21,8 @@ struct ExpressionFieldView: View {
     
     var body: some View {
         TextField("Enter an expression", text: $text)
-            .padding(.top,30)
-            .padding(.bottom,7.5)
+            .padding(.top,35)
+            .padding(.bottom,10)
             .padding(.horizontal)
             .textFieldStyle(.plain)
             .focusEffectDisabled()
@@ -56,13 +57,32 @@ struct ExpressionFieldView: View {
                     }
                 }
             }
-                
         }
 
     
     func calculateExpression() {
         let result = calculate(std.string(text))
-        output = String(result.output)
+        
+        // split by \n, and get type and warnings by splitting from :
+        let lines = String(result.messages).components(separatedBy: "\n")
+        var messages: [Messages] = []
+        for line in lines {
+            let parts = line.split(separator: ": ", maxSplits: 1)
+            if parts.count == 2 {
+                let type = parts[0]
+                let message = parts[1]
+                if let messageType = MessageTypes(rawValue: String(type)) {
+                    messages.append(Messages(type: messageType, message: String(message)))
+                }
+            }
+        }
+        
+        let item = HistoryItem(
+            expression: text,
+            result: String(result.output),
+            messages: messages
+        )
+        outputs.append(item)
     }
     
     /// Get the relevant text to use for completion

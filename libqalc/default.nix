@@ -27,6 +27,7 @@ pkgs.stdenv.mkDerivation rec {
   propagatedBuildInputs = [
     pkgs.libxml2
     pkgs.mpfr
+    # we build icu statically to avoid dynamic linking to libcpp
     pkgs.pkgsStatic.icu
     pkgs.gmp
   ];

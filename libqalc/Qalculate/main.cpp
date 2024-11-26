@@ -19,6 +19,11 @@ int init()
     printops.indicate_infinite_series = true;
     evalops.parse_options.angle_unit = ANGLE_UNIT_RADIANS;
     evalops.parse_options.unknowns_enabled = false;
+    evalops.warn_about_denominators_assumed_nonzero = true;
+
+    evalops.approximation = APPROXIMATION_TRY_EXACT;
+    CALCULATOR->setPrecision(16);
+
     return 0;
 }
 
@@ -51,9 +56,11 @@ Completions getCompletions(std::string input)
             // Check if it's a MathFunction
             if (auto *mathFunction = dynamic_cast<MathFunction *>(c))
             {
-                //Argument *arg = mathFunction->getArgumentDefinition(<#size_t index#>)
+                // Argument *arg = mathFunction->getArgumentDefinition(<#size_t index#>)
                 completions.push_back({c->name() + "()", c->title(), type});
-            } else {
+            }
+            else
+            {
                 // Handle generic ExpressionItem logic
                 completions.push_back({c->name(), c->title(), type});
             }
@@ -79,12 +86,15 @@ Calculation calculate(std::string calculation)
     ret.input = parsed_str;
     ret.output = result;
     CalculatorMessage *message;
-    if ((message = calculator->message()))
+
+    while ((message = calculator->message()))
     {
+        printf("Message: %s\n", message->message().c_str());
         auto msgType = message->type();
         std::string severity = msgType == MESSAGE_INFORMATION ? "Info" : msgType == MESSAGE_WARNING ? "Warning"
                                                                                                     : "Error";
         ret.messages += severity + ": " + message->message() + "\n";
+        calculator->nextMessage();
     }
 
     return ret;
@@ -94,3 +104,7 @@ std::string qalc_gnuplot_data_dir()
 {
     return "";
 }
+
+/*
+     GRAPHING
+ */

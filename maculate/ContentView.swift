@@ -8,27 +8,30 @@
 import SwiftUI
 import Qalculate
 
+enum MessageTypes: String {
+    case error = "Error"
+    case warning = "Warning"
+    case info = "Info"
+}
+
+struct Messages: Equatable,Hashable {
+    let type: MessageTypes
+    let message: String
+}
 
 struct HistoryItem: Equatable,Hashable {
     let expression: String
     let result: String
+    let messages: [Messages]
     let id = UUID()
 }
 
 struct ContentView: View {
-    @State private var text = ""
-    @State private var output = ""
     @State var outputs: [HistoryItem] = []
     
     var body: some View {
         VStack(spacing: 0) {
-            ExpressionFieldView(text: $text, output: $output)
-                .onChange(of: output) {
-                    withAnimation(.bouncy) {
-                        outputs.append(HistoryItem(expression: text, result: output))
-                    }
-                    text = ""
-                }
+            ExpressionFieldView(outputs: $outputs)
             Divider().padding(0)
             ScrollView {
                 LazyVStack {

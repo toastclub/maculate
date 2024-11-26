@@ -79,6 +79,24 @@ struct OutputView: View {
                 .padding([.leading,.trailing])
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .textSelection(.enabled)
+            ForEach(item.messages, id: \.self) { message in
+                switch message.type {
+                    case .error:
+                        Label(message.message, systemImage: "exlamationmark.octagon.fill")
+                            .foregroundColor(.red)
+                    case .warning:
+                        Label(message.message, systemImage: "exclamationmark.triangle.fill")
+                            .foregroundColor(.orange)
+                            .font(.caption)
+                    case .info:
+                        Label(message.message, systemImage: "info.circle.fill")
+                            .foregroundColor(.blue)
+                            .font(.caption)
+                }
+            }
+            .padding([.leading,.trailing])
+            .font(.caption)
+                                
             Divider()
         }
         .frame(maxWidth: .infinity, alignment: .leading)

@@ -47,9 +47,16 @@ struct VisualEffect: NSViewRepresentable {
     }
     func updateNSView(_ nsView: NSView, context: Context) { }
 }
+
+enum AngleUnit: String, CaseIterable, Identifiable {
+    case degrees, radians, gradians, arcminutes, arcseconds, turns, none
+    var id: String { self.rawValue }
+}
+
 @main
 struct maculateApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @AppStorage("angleUnit") var angleUnit = AngleUnit.degrees
     
     var body: some Scene {
         WindowGroup {
@@ -63,6 +70,15 @@ struct maculateApp: App {
                     appDelegate.showAboutPanel()
                 }) {
                     Text("About Maculate")
+                }
+            }
+            CommandGroup(before: .toolbar) {
+                Section {
+                    Picker("Angle Unit", selection: $angleUnit) {
+                        ForEach(AngleUnit.allCases) { unit in
+                            Text(unit.rawValue.capitalized).tag(unit)
+                        }
+                    }
                 }
             }
         }
