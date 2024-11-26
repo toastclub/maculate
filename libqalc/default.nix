@@ -26,10 +26,10 @@ pkgs.stdenv.mkDerivation rec {
   ];
   propagatedBuildInputs = [
     pkgs.libxml2
-    pkgs.pkgsStatic.mpfr
+    pkgs.mpfr
     # we build icu statically to avoid dynamic linking to libcpp
     pkgs.pkgsStatic.icu
-    pkgs.pkgsStatic.gmp
+    pkgs.gmp
   ];
 
   configureFlags = [
@@ -79,8 +79,8 @@ pkgs.stdenv.mkDerivation rec {
     rm -rf $out/share/doc
     rm -rf $out/share/locale
     mkdir -p $out/lib
-    for lib in ${pkgs.pkgsStatic.gmp}/lib/libgmp.a \
-        ${pkgs.pkgsStatic.mpfr}/lib/libmpfr.a \
+    for lib in ${pkgs.gmp.out}/lib/libgmp.dylib \
+        ${pkgs.mpfr.out}/lib/libmpfr.dylib \
         ${pkgs.pkgsStatic.icu}/lib/libicuuc.a \
         ${pkgs.pkgsStatic.icu}/lib/libicudata.a \
         ${pkgs.pkgsStatic.icu}/lib/libicui18n.a \

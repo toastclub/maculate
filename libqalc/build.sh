@@ -30,12 +30,12 @@ xcodebuild -create-xcframework \
     -output $FRAMEWORKS_DIR/LibQalculate.xcframework
 # gmp       headers: REQUIRED
 xcodebuild -create-xcframework \
-    -library result/lib/libgmp.a \
+    -library result/lib/libgmp.10.dylib \
     -headers result/include/gmp.h \
     -output $FRAMEWORKS_DIR/GMP.xcframework
 # mpfr      headers: REQUIRED
 xcodebuild -create-xcframework \
-    -library result/lib/libmpfr.a \
+    -library result/lib/libmpfr.6.dylib \
     -headers result/include/mpfr.h \
     -output $FRAMEWORKS_DIR/MPFR.xcframework
 # libxml2   headers: NOT needed
@@ -61,6 +61,17 @@ done
 #  Code Signing   #
 ###################
 
+find "$FRAMEWORKS_DIR" -name "*.dylib" | while read -r dylib; do
+    install_name_tool -id "@rpath/$(basename "$dylib")" "$dylib"
+    dependencies=$(otool -L "$dylib" | tail -n +2 | awk '{print $1}' | grep "$FRAMEWORKS_DIR")
+    for dep in $dependencies; do
+        dep_basename=$(basename "$dep")
+        echo "  Updating dependency $dep to @rpath/$dep_basename..."
+        # Update each dependency reference to @rpath/{filename}.
+        install_name_tool -change "$dep" "@rpath/$dep_basename" "$dylib"
+    done
+done
+
 # find all dylibs and sign them.
 # hardcoded to Toastcat LLC. You can change this to your own certificate.
 find $FRAMEWORKS_DIR -name "*.dylib" -exec codesign --force \
@@ -75,7 +86,7 @@ find $FRAMEWORKS_DIR -name "*.a" -exec chmod +w {} \; -exec codesign --force \
 
 # qalculate fixups
 find $FRAMEWORKS_DIR -type d -exec chmod +w {} \;
-# give +w on all .a files
+# fix the headers to be good
 find $FRAMEWORKS_DIR/LibQalculate.xcframework -name "*.h" \
     -exec sed -i '' 's/<libqalculate\//</g' {} \;
 mv $FRAMEWORKS_DIR/LibQalculate.xcframework/macos-arm64/Headers/qalculate.h $FRAMEWORKS_DIR/LibQalculate.xcframework/macos-arm64/Headers/LibQalculate.h
