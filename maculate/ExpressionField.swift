@@ -11,7 +11,9 @@ import SwiftUIIntrospect
 
 struct ExpressionFieldView: View {
     @Binding var outputs: [HistoryItem]
+    
 
+    @State private var hasTyped: Bool = false
     @State private var text: String = ""
     #if os(macOS)
     @State private var NSTextField: NSTextField?
@@ -20,7 +22,7 @@ struct ExpressionFieldView: View {
     @State private var relevantText: String?
     
     var body: some View {
-        TextField("Enter an expression", text: $text)
+        TextField(hasTyped ? "Type an expression" : "Maculate!", text: $text)
             .padding(.top,35)
             .padding(.bottom,10)
             .padding(.horizontal)
@@ -30,6 +32,9 @@ struct ExpressionFieldView: View {
                 DispatchQueue.main.async { NSTextField = textView }
             }.onChange(of: text) { oldValue, newValue in
                 if let NSTextField = NSTextField {
+                    if !hasTyped {
+                        hasTyped = true
+                    }
                     // This should be the cursor position
                     let cursorPosition = NSTextField.currentEditor()?.selectedRange.location ?? 0
                     self.cursorPosition = cursorPosition

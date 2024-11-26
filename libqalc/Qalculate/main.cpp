@@ -17,11 +17,15 @@ int init()
     printops.base_display = BASE_DISPLAY_NORMAL;
     printops.digit_grouping = DIGIT_GROUPING_STANDARD;
     printops.indicate_infinite_series = true;
+
     evalops.parse_options.angle_unit = ANGLE_UNIT_RADIANS;
     evalops.parse_options.unknowns_enabled = false;
     evalops.warn_about_denominators_assumed_nonzero = true;
 
     evalops.approximation = APPROXIMATION_TRY_EXACT;
+
+    printops.digit_grouping = DIGIT_GROUPING_NONE;
+
     CALCULATOR->setPrecision(16);
 
     return 0;
