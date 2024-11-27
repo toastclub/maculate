@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Qalculate
 
 enum MessageTypes: String {
     case error = "Error"
@@ -28,7 +27,7 @@ struct HistoryItem: Equatable,Hashable {
 
 struct ContentView: View {
     @State var outputs: [HistoryItem] = []
-    
+
     var body: some View {
         VStack(spacing: 0) {
             ExpressionFieldView(outputs: $outputs)
