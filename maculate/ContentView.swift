@@ -6,37 +6,30 @@
 //
 
 import SwiftUI
-
-enum MessageTypes: String {
-    case error = "Error"
-    case warning = "Warning"
-    case info = "Info"
-}
-
-struct Messages: Equatable,Hashable {
-    let type: MessageTypes
-    let message: String
-}
-
-struct HistoryItem: Equatable,Hashable {
-    let expression: String
-    let result: String
-    let messages: [Messages]
-    let id = UUID()
-}
+import SwiftData
 
 struct ContentView: View {
-    @State var outputs: [HistoryItem] = []
+    // outputs sorted by date
+    @Query(sort: \HistoryItem.date, order: .reverse, animation: .bouncy(duration: 0.2)) var outputs: [HistoryItem]
+    @AppStorage("hasEverInteracted") var hasEverInteracted = false
+    @Environment(\.modelContext) var modelContext
 
     var body: some View {
         VStack(spacing: 0) {
-            ExpressionFieldView(outputs: $outputs)
+            ExpressionFieldView()
             Divider().padding(0)
             ScrollView {
                 LazyVStack {
-                    ForEach(Array(outputs.reversed()), id: \.id) { item in
+                    ForEach(outputs, id: \.id) { item in
                         OutputView(item: item)
                     }
+                    Button("Clear History") {
+                        try? modelContext.delete(model: HistoryItem.self)
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundColor(.secondary)
+                    .padding(.vertical, 2)
+                    .font(.callout)
                 }.padding(.top,5)
             }
             .background(Color(NSColor(named: "BlackNWhite")!).opacity(0.5))
@@ -50,6 +43,15 @@ struct ContentView: View {
         )
         .ignoresSafeArea()
         .font(.system(size: 16))
+        .onAppear {
+            if !hasEverInteracted {
+                modelContext.insert(HistoryItem(expression: "2x + x^2 = 40", result: "<i>x</i> = 4 || <i>x</i> = −6", messages: [],specialStatus: [.tutorial]))
+                modelContext.insert(HistoryItem(expression: "(G * planet(earth; mass) * planet(mars; mass)) / (54.6e6 km)^2", result: "85.80 PN", messages: [],specialStatus: [.tutorial]))
+                modelContext.insert(HistoryItem(expression: "∫(x^2 + 2x + 1)dx", result: "x<sup>3</sup>/2 + x<sup>2</sup> + x + C", messages: [],specialStatus: [.tutorial]))
+                modelContext.insert(HistoryItem(expression: "1978 to roman", result: "MCMLXXVIII",messages: [],specialStatus: [.tutorial]))
+                modelContext.insert(HistoryItem(expression: "50 Ω * 2 A", result: "100 V", messages: [],specialStatus: [.tutorial]))
+            }
+        }
     }
 }
 #Preview {

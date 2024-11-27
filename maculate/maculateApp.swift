@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     private var aboutBoxWindowController: NSWindowController?
@@ -63,6 +64,7 @@ struct maculateApp: App {
             ContentView()
                 .background(VisualEffect().ignoresSafeArea())
         }
+        .modelContainer(for: HistoryItem.self)
         .windowStyle(.hiddenTitleBar)
         .commands {
             CommandGroup(replacing: CommandGroupPlacement.appInfo) {

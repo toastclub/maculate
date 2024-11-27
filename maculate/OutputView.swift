@@ -12,7 +12,6 @@ func styledOutput(_ text: String) -> AttributedString {
 
     var tagHandlers: [String: (Substring) -> AttributedString] = [:]
 
-
     func processText(_ text: Substring) -> AttributedString {
         var result = AttributedString()
         var currentIndex = text.startIndex
@@ -69,6 +68,8 @@ func styledOutput(_ text: String) -> AttributedString {
 
 struct OutputView: View {
     var item: HistoryItem
+    @AppStorage("hasEverInteracted") var hasEverInteracted = false
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text(item.expression)
@@ -96,8 +97,12 @@ struct OutputView: View {
             }
             .padding([.leading,.trailing])
             .font(.caption)
-                                
             Divider()
+        }
+        .modify {
+            if item.specialStatus?.contains(.tutorial) == true {
+                $0.foregroundColor(.secondary)
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .transition(.move(edge: .top))
