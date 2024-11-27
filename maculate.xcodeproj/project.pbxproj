@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		208C8CDB2CF23BAA002551E5 /* Qalculate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 202EDAA02CF0DE9700426644 /* Qalculate.framework */; };
 		208C8CDC2CF23BAA002551E5 /* Qalculate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 202EDAA02CF0DE9700426644 /* Qalculate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2095822B2CF6A3B4005828DD /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2095822A2CF6A3B4005828DD /* PrivacyInfo.xcprivacy */; };
 		20FD15802CF2ED640059D150 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 20FD157F2CF2ED640059D150 /* SwiftUIIntrospect */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +56,7 @@
 		202436D02CF032B000734E77 /* maculateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = maculateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		202436DA2CF032B000734E77 /* maculateUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = maculateUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		202EDAA02CF0DE9700426644 /* Qalculate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Qalculate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2095822A2CF6A3B4005828DD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -66,7 +68,7 @@
 			);
 			target = 202EDA9F2CF0DE9700426644 /* Qalculate */;
 		};
-		2090F1F02CF6885C00BA451F /* Exceptions for "Qalculate" folder in "Maculate" target */ = {
+		20B14B852CF6D9F60096EA8A /* Exceptions for "Qalculate" folder in "Maculate" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				frameworks/GMP.xcframework,
@@ -84,7 +86,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		2090F1F12CF6885C00BA451F /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Maculate" target */ = {
+		20B14B862CF6D9F60096EA8A /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Maculate" target */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			attributesByRelativePath = {
 				frameworks/GMP.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
@@ -131,8 +133,8 @@
 		202EDAA12CF0DE9700426644 /* Qalculate */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				2090F1F02CF6885C00BA451F /* Exceptions for "Qalculate" folder in "Maculate" target */,
-				2090F1F12CF6885C00BA451F /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Maculate" target */,
+				20B14B852CF6D9F60096EA8A /* Exceptions for "Qalculate" folder in "Maculate" target */,
+				20B14B862CF6D9F60096EA8A /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Maculate" target */,
 				202EDAAA2CF0DE9700426644 /* Exceptions for "Qalculate" folder in "Qalculate" target */,
 			);
 			explicitFileTypes = {
@@ -180,6 +182,7 @@
 		202436B62CF032AE00734E77 = {
 			isa = PBXGroup;
 			children = (
+				2095822A2CF6A3B4005828DD /* PrivacyInfo.xcprivacy */,
 				202ED8D32CF055E000426644 /* libqalc */,
 				202436C12CF032AE00734E77 /* maculate */,
 				202436D32CF032B000734E77 /* maculateTests */,
@@ -378,6 +381,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2095822B2CF6A3B4005828DD /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,16 +586,15 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = maculate/maculate.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"maculate/Preview Content\"";
 				DEVELOPMENT_TEAM = APTCP6Z8HA;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -603,7 +606,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.toastcat.maculate.maculate;
+				PRODUCT_BUNDLE_IDENTIFIER = com.toastcat.maculate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_INTEROP_MODE = objcxx;
@@ -620,16 +623,15 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = maculate/maculate.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"maculate/Preview Content\"";
 				DEVELOPMENT_TEAM = APTCP6Z8HA;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -641,7 +643,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.toastcat.maculate.maculate;
+				PRODUCT_BUNDLE_IDENTIFIER = com.toastcat.maculate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_INTEROP_MODE = objcxx;
