@@ -12,12 +12,12 @@ import SwiftData
 
 struct ExpressionFieldView: View {
     @State private var text: String = ""
-    #if os(macOS)
+#if os(macOS)
     @State private var NSTextField: NSTextField?
-    #endif
+#endif
     @State private var cursorPosition: Int = 0
     @State private var relevantText: String?
-
+    
     let replacementMap = [
         "functions": [
             "integrate": "∫",
@@ -34,11 +34,11 @@ struct ExpressionFieldView: View {
             "euler": "γ",
         ],
     ]
-
+    
     @AppStorage("hasEverInteracted") var hasEverInteracted = false
-
+    
     @Environment(\.modelContext) var modelContext
-
+    
     var body: some View {
         TextField("Enter an expression", text: $text)
             .padding(.top,35)
@@ -85,19 +85,20 @@ struct ExpressionFieldView: View {
                     }
                 }
             }
-        }
-
+    }
+    
     func replaceSymbols(text: String) -> String {
         guard cursorPosition > 0 else { return text }
-
+        
         var updatedText = text
-
-        // Define a helper to check for valid preceding and following conditions
+        
+        /// Check if the range is preceded by a non-letter character.
         func isPrecededByNonLetter(_ range: Range<String.Index>, in text: String) -> Bool {
             guard range.lowerBound > text.startIndex else { return true }
             return !text[text.index(before: range.lowerBound)].isLetter
         }
-
+        
+        /// Check if the range is followed by specific valid characters.
         func isFollowedBy(_ range: Range<String.Index>, in text: String, validCharacters: [Character]) -> Bool {
             guard range.upperBound < text.endIndex else { return false }
             let nextChar = text[range.upperBound]
@@ -106,30 +107,28 @@ struct ExpressionFieldView: View {
              range.upperBound < text.index(before: text.endIndex) &&
              validCharacters.contains(text[text.index(after: range.upperBound)]))
         }
-
-        for (function, symbol) in replacementMap["functions"] ?? [:] {
-            if let range = text.range(of: function, options: .backwards, range: text.startIndex..<text.index(text.startIndex, offsetBy: cursorPosition)),
-               isPrecededByNonLetter(range, in: text),
-               isFollowedBy(range, in: text, validCharacters: ["("]) {
-                updatedText.replaceSubrange(range, with: symbol)
-                cursorPosition = updatedText.distance(from: updatedText.startIndex, to: range.lowerBound) + symbol.count
-                break
+        
+        /// Helper function to handle replacements based on specific rules.
+        func replaceMatchingSymbols(from map: [String: String], validFollowingCharacters: [Character]) {
+            for (key, symbol) in map {
+                if let range = updatedText.range(of: key, options: .backwards, range: updatedText.startIndex..<updatedText.index(updatedText.startIndex, offsetBy: cursorPosition)),
+                   isPrecededByNonLetter(range, in: updatedText),
+                   isFollowedBy(range, in: updatedText, validCharacters: validFollowingCharacters) {
+                    updatedText.replaceSubrange(range, with: symbol)
+                    cursorPosition = updatedText.distance(from: updatedText.startIndex, to: range.lowerBound) + symbol.count
+                    break
+                }
             }
         }
-
-        for (constant, symbol) in replacementMap["constants"] ?? [:] {
-            if let range = text.range(of: constant, options: .backwards, range: text.startIndex..<text.index(text.startIndex, offsetBy: cursorPosition)),
-               isPrecededByNonLetter(range, in: text),
-               isFollowedBy(range, in: text, validCharacters: ["*", "-", "/", "+", "^"]) {
-                updatedText.replaceSubrange(range, with: symbol)
-                cursorPosition = updatedText.distance(from: updatedText.startIndex, to: range.lowerBound) + symbol.count
-                break
-            }
-        }
-
+        
+        // Check for functions (followed by `(`)
+        replaceMatchingSymbols(from: replacementMap["functions"] ?? [:], validFollowingCharacters: ["("])
+        
+        // Check for constants (followed by operators)
+        replaceMatchingSymbols(from: replacementMap["constants"] ?? [:], validFollowingCharacters: ["*", "-", "/", "+", "^"])
+        
         return updatedText
     }
-
 
     func calculateExpression() {
         let result = calculate(std.string(text))
