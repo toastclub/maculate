@@ -4,7 +4,7 @@ Maculate offers a Swift—native frontend for Qalculate, the ultimate desktop ca
 
 ![SCR-20241126-rxsp](https://github.com/user-attachments/assets/e3e6bf65-f430-43dd-b890-8a762ba04e93)
 
-<a href="https://toastcat.club/maculate/">![Mac App Store Badge](https://github.com/user-attachments/assets/4fd17854-b560-4e9e-803d-a5193e1a9a71)</a>
+<a href="https://apps.apple.com/us/app/maculate/id6738711535">![Mac App Store Badge](https://github.com/user-attachments/assets/4fd17854-b560-4e9e-803d-a5193e1a9a71)</a>
 
 It supports just about anything you could imagine, including hundreds of units and dozens of constants, unit conversions, solving for unknown values, factorizing equations, calculus: differentiate and integrate, calculate in different base systems, calculate with time, account for uncertainty, economics, matrices and vectors, combinatorics, complex Numbers, variable assignment, and much much more
 
