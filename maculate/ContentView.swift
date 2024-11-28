@@ -18,21 +18,43 @@ struct ContentView: View {
         VStack(spacing: 0) {
             ExpressionFieldView()
             Divider().padding(0)
-            ScrollView {
-                LazyVStack {
-                    ForEach(outputs, id: \.id) { item in
-                        OutputView(item: item)
-                    }
-                    Button("Clear History") {
-                        try? modelContext.delete(model: HistoryItem.self)
-                    }
-                    .buttonStyle(.plain)
-                    .foregroundColor(.secondary)
-                    .padding(.vertical, 2)
-                    .font(.callout)
-                }.padding(.top,5)
+            if outputs.isEmpty {
+                VStack {
+                    Spacer()
+                    Image("Ghost")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 128, height: 128)
+                    Text("You found the ghost!")
+                        .font(.title2)
+                    Text("You win nothing!")
+                        .font(.title3)
+                    Spacer()
+                }
+                .foregroundColor(.secondary.opacity(0.7))
+                .frame(
+                    minWidth: 0,
+                    maxWidth: .infinity,
+                    minHeight: 0,
+                    maxHeight: .infinity
+                )
+            } else {
+                ScrollView {
+                    LazyVStack {
+                        ForEach(outputs, id: \.id) { item in
+                            OutputView(item: item)
+                        }
+                        Button("Clear History") {
+                            try? modelContext.delete(model: HistoryItem.self)
+                        }
+                        .buttonStyle(.plain)
+                        .foregroundColor(.secondary)
+                        .padding(.vertical, 2)
+                        .font(.callout)
+                    }.padding(.top,5)
+                }
+                .background(Color(NSColor(named: "BlackNWhite")!).opacity(0.5))
             }
-            .background(Color(NSColor(named: "BlackNWhite")!).opacity(0.5))
         }
         .frame(
             minWidth: 0,

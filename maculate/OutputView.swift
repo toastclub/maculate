@@ -8,6 +8,7 @@
 import SwiftUI
 
 func styledOutput(_ text: String) -> AttributedString {
+    var text = text
     var attributedString = AttributedString()
 
     var tagHandlers: [String: (Substring) -> AttributedString] = [:]
@@ -61,7 +62,9 @@ func styledOutput(_ text: String) -> AttributedString {
             return styledText
         }
     ]
-
+    
+    text = text.replacingOccurrences(of: "&nbsp;", with: " ")
+    
     attributedString = processText(text[...])
     return attributedString
 }
@@ -83,7 +86,7 @@ struct OutputView: View {
             ForEach(item.messages, id: \.self) { message in
                 switch message.type {
                     case .error:
-                        Label(message.message, systemImage: "exlamationmark.octagon.fill")
+                        Label(message.message, systemImage: "exclamationmark.octagon.fill")
                             .foregroundColor(.red)
                     case .warning:
                         Label(message.message, systemImage: "exclamationmark.triangle.fill")
