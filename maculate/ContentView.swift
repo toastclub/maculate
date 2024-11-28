@@ -45,6 +45,8 @@ struct ContentView: View {
                             OutputView(item: item)
                         }
                         Button("Clear History") {
+                            // save the model context before deletion to delete uncommitted changes
+                            try? modelContext.save()
                             try? modelContext.delete(model: HistoryItem.self)
                         }
                         .buttonStyle(.plain)
