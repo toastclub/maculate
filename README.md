@@ -2,11 +2,11 @@
 
 Maculate offers a Swift—native frontend for Qalculate, the ultimate desktop calculator. In observance of Qalculate's GPL license, Maculate is licensed freely under the GPLv2.
 
-![SCR-20241126-rxsp](https://github.com/user-attachments/assets/e3e6bf65-f430-43dd-b890-8a762ba04e93)
+![](https://github.com/user-attachments/assets/e3e6bf65-f430-43dd-b890-8a762ba04e93)
 
 <a href="https://apps.apple.com/us/app/maculate/id6738711535">![Mac App Store Badge](https://github.com/user-attachments/assets/4fd17854-b560-4e9e-803d-a5193e1a9a71)</a>
 
-It supports just about anything you could imagine, including hundreds of units and dozens of constants, unit conversions, solving for unknown values, factorizing equations, calculus: differentiate and integrate, calculate in different base systems, calculate with time, account for uncertainty, economics, matrices and vectors, combinatorics, complex Numbers, variable assignment, and much much more
+It supports just about anything you could imagine, including hundreds of units and dozens of constants, unit conversions, solving for unknown values, factorizing equations, calculus: differentiate and integrate, calculate in different base systems, calculate with time, account for uncertainty, economics, matrices and vectors, combinatorics, complex numbers, variable assignment, and much much more
 
 For a full list of features, refer to the Qalculate documentation. Please note that Maculate does not currently support the following features: plotting, loading & exporting datasets, real time currency conversion
 
@@ -30,6 +30,12 @@ Under certain circumstances, we may not be able to provide assistance in buildin
 Maculate is open source, but the source code is not under any sort of warranty. Contributions are generally welcome, though be aware that you will not be compensated for them.
 
 We generally regard the codebase as being well-written and documented, so it could serve as a good basis to libqalculate.
+
+### DRM
+
+The currency conversion feature makes calls to a server hosted at `maculate.toastcat.club`. This server is developed within this repository. It currently acts as a simple anonymizing proxy. These requests include [Reciepts](https://developer.apple.com/documentation/appstorereceipts/validating_receipts_on_the_device) signed by Apple, which are used to verify the purchase of the app. Hence, the currency conversion feature is not available in the open source version of Maculate out of the box, but you can host your own server with relative ease.
+
+Please note that the server is licensed under the AGPLv3, wheras the rest of the project is licensed under the GPLv2.
 
 ## Support Matrix
 

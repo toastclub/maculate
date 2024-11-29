@@ -60,12 +60,6 @@ pkgs.stdenv.mkDerivation rec {
       --replace 'printf(_("aborted"))' 'printf("%s", _("aborted"))'
   '';
 
-  /*preBuild = ''
-    pushd docs/reference
-    doxygen Doxyfile
-    popd
-  '';*/
-
   postInstall = ''
     # Ensure all headers from propagatedBuildInputs are copied to the include directory
     mkdir -p $out/include

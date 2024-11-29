@@ -2,3 +2,4 @@ libqalc/result
 Makefile.in
 .DS_Store
 frameworks
+node_modules

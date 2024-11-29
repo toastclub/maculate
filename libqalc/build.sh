@@ -58,7 +58,7 @@ for lib in icuuc icudata icui18n; do
 done
 
 ###################
-#  Code Signing   #
+#    Patching     #
 ###################
 
 # when the libraries are built, they are built inside nix's directories,
@@ -77,13 +77,18 @@ find "$FRAMEWORKS_DIR" -name "*.dylib" | while read -r dylib; do
     done
 done
 
+###################
+#  Code Signing   #
+###################
+
 # find all dylibs and sign them.
 # hardcoded to Toastcat LLC. You can change this to your own certificate.
 find $FRAMEWORKS_DIR -name "*.dylib" -exec codesign --force \
     --timestamp --sign "Apple Development: Evan Boehs (668LYMH4FH)" {} \;
 
-find $FRAMEWORKS_DIR -name "*.a" -exec chmod +w {} \; -exec codesign --force \
-    --timestamp --sign "Apple Development: Evan Boehs (668LYMH4FH)" {} \;
+# .a files don't need to be signed, they are merged into the final binary
+#find $FRAMEWORKS_DIR -name "*.a" -exec chmod +w {} \; -exec codesign --force \
+#    --timestamp --sign "Apple Development: Evan Boehs (668LYMH4FH)" {} \;
 
 ###################
 #   Post-Process  #
