@@ -108,7 +108,3 @@ std::string qalc_gnuplot_data_dir()
 {
     return "";
 }
-
-/*
-     GRAPHING
- */

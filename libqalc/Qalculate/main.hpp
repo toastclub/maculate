@@ -27,6 +27,7 @@ struct Completion
 typedef std::vector<Completion> Completions;
 
 std::string qalc_gnuplot_data_dir();
+Calculator *getCalculator();
 Calculation calculate(std::string calculation);
 Completions getCompletions(std::string input);
 
