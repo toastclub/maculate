@@ -6,7 +6,7 @@
 //
 
 #ifndef GRAPHING_H
-#define GRAPHIN_H
+#define GRAPHING_H
 #include <string>
 using std::string;
 
