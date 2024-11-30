@@ -44,6 +44,7 @@ struct ExpressionFieldView: View {
     
     var body: some View {
         TextField("Enter an expression", text: $text)
+            .frame(maxWidth: .infinity)
             .padding(.top,35)
             .padding(.bottom,10)
             .padding(.horizontal)
@@ -162,7 +163,7 @@ struct ExpressionFieldView: View {
     }
 
     /// Get the relevant text to use for completion
-    /// For example, if the user types in 5newton, the relevant text is "newton"
+    /// For example, if the user types in 5newt, the relevant text is "newt"
     /// - Returns: The relevant text to use for
     func getReleventText(text: String) -> String? {
         if text.isEmpty || cursorPosition <= 0 {

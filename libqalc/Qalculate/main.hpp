@@ -22,6 +22,8 @@ struct Completion
     std::string name;
     std::string description;
     CompletionType type;
+    // for functions, this is the argument list
+    std::string data_one;
 };
 
 typedef std::vector<Completion> Completions;
@@ -29,5 +31,6 @@ typedef std::vector<Completion> Completions;
 std::string qalc_gnuplot_data_dir();
 Calculation calculate(std::string calculation);
 Completions getCompletions(std::string input);
+bool injectCurrencies(std::string currencies);
 
 #endif // MAIN_H

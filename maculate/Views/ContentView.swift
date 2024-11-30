@@ -17,6 +17,7 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 0) {
             ExpressionFieldView()
+                .frame(maxWidth: .infinity)
             Divider().padding(0)
             if outputs.isEmpty {
                 VStack {
@@ -61,7 +62,6 @@ struct ContentView: View {
             }
         }
         .frame(
-            minWidth: 0,
             maxWidth: .infinity,
             minHeight: 0,
             maxHeight: .infinity,
@@ -70,10 +70,17 @@ struct ContentView: View {
         .ignoresSafeArea()
         .font(.system(size: 16))
         .onAppear {
+            if #available(macOS 15.0, iOS 18.0, *) {
+                let currencyManager = CurrencyManager(modelContext: modelContext)
+                Task {
+                    await currencyManager.getConversionRates()
+                    currencyManager.injectConversionRates()
+                }
+            }
             if !hasEverInteracted {
                 modelContext.insert(HistoryItem(expression: "2x + x^2 = 40", result: "<i>x</i> = 4 || <i>x</i> = −6", messages: [],specialStatus: [.tutorial]))
                 modelContext.insert(HistoryItem(expression: "(G * planet(earth; mass) * planet(mars; mass)) / (54.6e6 km)^2", result: "85.80 PN", messages: [],specialStatus: [.tutorial]))
-                modelContext.insert(HistoryItem(expression: "∫(x^2 + 2x + 1)dx", result: "x<sup>3</sup>/2 + x<sup>2</sup> + x + C", messages: [],specialStatus: [.tutorial]))
+                modelContext.insert(HistoryItem(expression: "∫(x^2 + 2x + 1)", result: "<i>x</i><sup>3</sup>/2 + x<sup>2</sup> + x + C", messages: [],specialStatus: [.tutorial]))
                 modelContext.insert(HistoryItem(expression: "1978 to roman", result: "MCMLXXVIII",messages: [],specialStatus: [.tutorial]))
                 modelContext.insert(HistoryItem(expression: "50 Ω * 2 A", result: "100 V", messages: [],specialStatus: [.tutorial]))
             }

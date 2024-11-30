@@ -4,6 +4,8 @@
 #include "LibQalculate.h"
 #include "main.hpp"
 #include <iostream>
+#include <sstream>
+#include <unordered_map>
 
 EvaluationOptions evalops;
 PrintOptions printops;
@@ -60,13 +62,20 @@ Completions getCompletions(std::string input)
             // Check if it's a MathFunction
             if (auto *mathFunction = dynamic_cast<MathFunction *>(c))
             {
-                // Argument *arg = mathFunction->getArgumentDefinition(<#size_t index#>)
-                completions.push_back({c->name() + "()", c->title(), type});
+                std::string value = mathFunction->name() + "()";
+                std::string args;
+                for (size_t i = 1; i <= mathFunction->lastArgumentDefinitionIndex(); i++)
+                {
+                    if (i > 1)
+                        args += ", ";
+                    args += mathFunction->getArgumentDefinition(i)->copy()->name();
+                }
+                completions.push_back({value, mathFunction->title(), type, args});
             }
             else
             {
                 // Handle generic ExpressionItem logic
-                completions.push_back({c->name(), c->title(), type});
+                completions.push_back({c->name(), c->title(), type, ""});
             }
         }
     };
@@ -102,6 +111,55 @@ Calculation calculate(std::string calculation)
     }
 
     return ret;
+}
+
+bool injectCurrencies(std::string currencies)
+{
+    // currencies are in the format "USD:1.23\n", iterate over them
+    std::unordered_map<std::string, std::string> currencyMap;
+    std::istringstream stream(currencies);
+    std::string line;
+
+    while (std::getline(stream, line))
+    {
+        size_t delimiterPos = line.find(':');
+        if (delimiterPos == std::string::npos)
+        {
+            std::cerr << "Invalid format: " << line << '\n';
+            return false;
+        }
+        std::string currencyCode = line.substr(0, delimiterPos);
+        std::string valueStr = line.substr(delimiterPos + 1);
+        currencyMap[currencyCode] = valueStr;
+    }
+
+    Calculator *calc = getCalculator();
+    Unit *u_euro = calc->getUnit("EUR");
+
+    // https://github.com/Qalculate/libqalculate/blob/0d81784d2c85ca90b5a660b70862b9572be661e3/libqalculate/Calculator-definitions.cc#L3588-L3610
+    for (const auto &[currency, rate] : currencyMap)
+        if (!rate.empty())
+        {
+            std::string _rate = "1/" + rate;
+            Unit *u = calc->getUnit(currency);
+            if (!u)
+            {
+                u = calc->addUnit(new AliasUnit("Currency", currency, "", "", "", u_euro, _rate, 1, "", false, true));
+            }
+            else if (u->subtype() == SUBTYPE_ALIAS_UNIT)
+            {
+                ((AliasUnit *)u)->setBaseUnit(u_euro);
+                ((AliasUnit *)u)->setExpression(rate);
+            }
+            if (u)
+            {
+                u->setApproximate();
+                u->setPrecision(-2);
+                u->setChanged(false);
+            }
+        }
+    calc->setExchangeRatesWarningEnabled(false);
+    return true;
 }
 
 std::string qalc_gnuplot_data_dir()

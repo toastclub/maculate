@@ -8,7 +8,9 @@
 import Foundation
 import SwiftData
 import SwiftUI
+import Qalculate
 
+@available(macOS 15, iOS 18, *)
 @Model
 final class ConversionRate {
     #Unique<ConversionRate>([\.fromCurrency, \.toCurrency])
@@ -31,19 +33,14 @@ struct ConversionRatesApiResponse: Codable {
     let eur: [String: Double]
 }
 
+@available(macOS 15, iOS 18, *)
 class CurrencyManager {
-    static let shared = CurrencyManager()
-    @AppStorage("lastUpdated") var lastUpdated = Date()
-    @Environment(\.modelContext) var modelContext
-    
-    // fetch every 24 hours
-    let timer = Timer.scheduledTimer(withTimeInterval: 86400, repeats: true) { _ in
-        Task {
-            await shared.getConversionRates()
-            shared.injectConversionRates()
-        }
+    let modelContext: ModelContext
+    init(modelContext: ModelContext) {
+        self.modelContext = modelContext
     }
-    
+    @AppStorage("lastUpdated") var lastUpdated = Date()
+
     // todo: fetch from toastcat servers
     func getConversionRates() async {
         let url = URL(string: "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/eur.min.json")!
@@ -63,6 +60,7 @@ class CurrencyManager {
     func injectConversionRates() {
         // map to a \n delimited string in the form of CODE:RATE
         let conversionRates = try? modelContext.fetch(FetchDescriptor<ConversionRate>())
-        let conversionRatesString = conversionRates?.map { "\($0.fromCurrency):\($0.toCurrency):\($0.rate)" }.joined(separator: "\n")
+        let conversionRatesString = conversionRates?.map { "\($0.toCurrency.uppercased()):\($0.rate)" }.joined(separator: "\n")
+        injectCurrencies(std.string(conversionRatesString))
     }
 }
