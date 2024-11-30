@@ -14,6 +14,8 @@ struct ExpressionFieldView: View {
     @State private var text: String = ""
 #if os(macOS)
     @State private var NSTextField: NSTextField?
+#else
+    @State private var UITextField: UITextField?
 #endif
     @State private var cursorPosition: Int = 0
     @State private var relevantText: String?
@@ -49,23 +51,26 @@ struct ExpressionFieldView: View {
             .introspect(.textField, on: .macOS(.v14,.v15)) { textView in
                 DispatchQueue.main.async { NSTextField = textView }
             }.onChange(of: text) { oldValue, newValue in
+#if os(macOS)
                 if let NSTextField = NSTextField {
                     // This should be the cursor position
                     let cursorPosition = NSTextField.currentEditor()?.selectedRange.location ?? 0
                     self.cursorPosition = cursorPosition
-                    relevantText = getReleventText(text: newValue)
+                    // why did i write this? is it necessary?
+                    NSTextField.currentEditor()?.selectedRange = NSRange(location: self.cursorPosition, length: 0)
                 }
+#else
+                if let UITextField = UITextField {
+                    let cursorPosition = UITextField.selectedTextRange?.start
+                    self.cursorPosition = cursorPosition?.utf16Offset(in: text) ?? 0
+                    UITextField.selectedTextRange = UITextField.textRange(from: cursorPosition, to: cursorPosition)
+                }
+#endif
+                self.text = replaceSymbols(text: newValue)
+                relevantText = getReleventText(text: newValue)
             }
             .onSubmit {
                 calculateExpression()
-            }
-            .onChange(of: text) { oldValue, newValue in
-                if let NSTextField = NSTextField {
-                    let cursorPosition = NSTextField.currentEditor()?.selectedRange.location ?? 0
-                    self.cursorPosition = cursorPosition
-                    self.text = replaceSymbols(text: newValue)
-                    NSTextField.currentEditor()?.selectedRange = NSRange(location: self.cursorPosition, length: 0)
-                }
             }
             .modify {
                 // The completion API is only available on macOS 15.0 and later.

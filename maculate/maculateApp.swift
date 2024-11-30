@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 
+#if os(macOS)
 class AppDelegate: NSObject, NSApplicationDelegate {
     private var aboutBoxWindowController: NSWindowController?
     
@@ -48,6 +49,7 @@ struct VisualEffect: NSViewRepresentable {
     }
     func updateNSView(_ nsView: NSView, context: Context) { }
 }
+#endif
 
 enum AngleUnit: String, CaseIterable, Identifiable {
     case degrees, radians, gradians, arcminutes, arcseconds, turns, none
@@ -56,13 +58,17 @@ enum AngleUnit: String, CaseIterable, Identifiable {
 
 @main
 struct maculateApp: App {
+#if os(macOS)
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+#endif
     @AppStorage("angleUnit") var angleUnit = AngleUnit.degrees
     
     var body: some Scene {
         WindowGroup {
             ContentView()
+#if os(macOS)
                 .background(VisualEffect().ignoresSafeArea())
+#endif
         }
         .modelContainer(for: HistoryItem.self)
         .windowStyle(.hiddenTitleBar)

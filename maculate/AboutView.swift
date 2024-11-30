@@ -11,10 +11,17 @@ struct AboutView: View {
     var body: some View {
         VStack {
             // app icon
+#if os(macOS)
             Image(nsImage: (NSImage(named: "AppIcon"))!)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 128, height: 128)
+#else
+            Image(uiImage: UIImage(named: "AppIcon")!)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 128, height: 128)
+#endif
             // app name
             Text("Maculate")
                 .font(.system(.title, design: .serif,weight: .bold))
