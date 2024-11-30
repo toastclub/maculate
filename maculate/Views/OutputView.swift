@@ -2,6 +2,8 @@
 //  OutputView.swift
 //  maculate
 //
+//  References: https://github.com/jherkenhoff/qalculate-android/blob/main/app/src/main/java/com/jherkenhoff/qalculate/ui/common/mathExpressionFormatter.kt
+//
 //  Created by Evan Boehs on 11/24/24.
 //
 
@@ -56,14 +58,24 @@ func styledOutput(_ text: String) -> AttributedString {
             return styledText
         },
         "sup": { content in
-            var styledText = processText(content) // Recursively process content
-            styledText.baselineOffset = 6 // Adjust as needed for superscript
+            var styledText = processText(content)
+            styledText.baselineOffset = 6
+            styledText.font = .system(size: 14)
+            return styledText
+        },
+        "sub": { content in
+            var styledText = processText(content)
+            styledText.baselineOffset = -6
             styledText.font = .system(size: 14)
             return styledText
         }
     ]
     
-    text = text.replacingOccurrences(of: "&nbsp;", with: " ")
+    text = text
+        .replacingOccurrences(of: "&nbsp;", with: " ")
+        .replacingOccurrences(of: "&lt;", with: "<")
+        .replacingOccurrences(of: "&gt;", with: ">")
+        .replacingOccurrences(of: "&amp;", with: "&")
     
     attributedString = processText(text[...])
     return attributedString
@@ -71,7 +83,6 @@ func styledOutput(_ text: String) -> AttributedString {
 
 struct OutputView: View {
     var item: HistoryItem
-    @AppStorage("hasEverInteracted") var hasEverInteracted = false
     
     var body: some View {
         VStack(alignment: .leading) {
