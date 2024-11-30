@@ -10,7 +10,7 @@ It supports just about anything you could imagine, including hundreds of units a
 
 For a full list of features, refer to the Qalculate documentation. Please note that Maculate does not currently support the following features: plotting, loading & exporting datasets, real time currency conversion
 
-Due to the reoccuring expenses associated with Apple development, Maculate builds will be made available on the App Store, for \$7.99. The current intent is to distribute 50\% of the proceeds to various open source projects, after \$600 in yearly expenses are covered.
+Due to the reoccuring expenses associated with Apple development, Maculate builds will be made available on the App Store, for \$6.99. The current intent is to distribute 50\% of the proceeds to various open source projects, after \$600 in yearly expenses are covered.
 
 ## Building
 
@@ -39,8 +39,8 @@ Please note that the server is licensed under the AGPLv3, wheras the rest of the
 
 ## Support Matrix
 
-|                         | macOS | iOS | iPadOS | Notes                   |
-| ----------------------- | ----- | --- | ------ | ----------------------- |
-| macOS 15 <br/> iOS 18   | ✅    | ⏱️  | ⏱️     |                         |
-| macOS 14 <br/> iOS 17   | ⚠️    | ⏱️  | ⏱️     | No Plots, No Completion |
-| macOS <14 <br/> iOS <17 | ❌    | ❌  | ❌     | Never Supported         |
+|                         | macOS | iOS  | iPadOS | Notes                   |
+| ----------------------- | ----- | ---- | ------ | ----------------------- |
+| macOS 15 <br/> iOS 18   | ✅    | ⏱️⚠️ | ⏱️⚠️   | iOS has no completion   |
+| macOS 14 <br/> iOS 17   | ⚠️    | ⏱️⚠️ | ⏱️⚠️   | No plots, no completion |
+| macOS <14 <br/> iOS <17 | ❌    | ❌   | ❌     | Never Supported         |
