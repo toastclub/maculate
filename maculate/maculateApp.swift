@@ -71,11 +71,16 @@ struct maculateApp: App {
 #endif
         }
         .modelContainer(for: HistoryItem.self)
+        .modelContainer(for: ConversionRate.self)
+#if os(macOS)
         .windowStyle(.hiddenTitleBar)
+#endif
         .commands {
             CommandGroup(replacing: CommandGroupPlacement.appInfo) {
                 Button(action: {
+#if os(macOS)
                     appDelegate.showAboutPanel()
+#endif
                 }) {
                     Text("About Maculate")
                 }

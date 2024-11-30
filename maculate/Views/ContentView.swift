@@ -55,7 +55,9 @@ struct ContentView: View {
                         .font(.callout)
                     }.padding(.top,5)
                 }
+#if os(macOS)
                 .background(Color(NSColor(named: "BlackNWhite")!).opacity(0.5))
+#endif
             }
         }
         .frame(

@@ -41,9 +41,6 @@ pkgs.stdenv.mkDerivation rec {
     "--enable-static"
   ];
 
-  # todo: this is preferable, but it causes configure: error: C compiler cannot create executables
-  #LDFLAGS = "-avoid-version";
-
   enableParallelBuilding = true;
 
   preConfigure = ''

@@ -26,6 +26,7 @@ struct ExpressionFieldView: View {
             "integral": "∫",
             "sum": "Σ",
             "product": "Π",
+            "sqrt": "√",
         ],
         "constants": [
             "pi": "π",
