@@ -1,3 +1,5 @@
+import { Env } from "./types";
+
 interface FawazReturn {
   date: string;
   eur: {
@@ -71,4 +73,13 @@ async function fetchCurrencyData(): Promise<any> {
     fawazData = openExchangeRatesData;
   }
   return fawazData;
+}
+
+export async function handleCron(event: any, env: Env) {
+  const data = await fetchCurrencyData();
+  if (data == undefined) {
+    console.error(`Failed to fetch currency data`);
+    return;
+  }
+  await env.KV.put("currencies", JSON.stringify(data));
 }

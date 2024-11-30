@@ -1,4 +1,5 @@
 import { t } from "elysia";
+import * as cf from "@cloudflare/workers-types";
 
 export const currenciesResponse = {
   200: t.Object({
@@ -17,3 +18,7 @@ export const currenciesResponse = {
     message: t.Literal("Unauthorized"),
   }),
 };
+
+export interface Env {
+  KV: cf.KVNamespace;
+}
