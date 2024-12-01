@@ -1,0 +1,3 @@
+# libqalculate ported to rust
+
+Libqalculate has an incredibly messy codebase, I suspect it is at least one order of magnitude larger than it needs to be, and it concerns itself with things that it should not (for instance, fetching currencies should be delegated to the consumer, and the vast majority of graphing as well). It's quite difficult to implement applications on top of it for this reason. The _problem_ is that a rewrite would _still_ likely clock in at over 10kloc, and by miracle libqalculate is mostly bug free. Thus, I'm not sure this rewrite will ever be completed, I'm just doing pieces here and there on the side.

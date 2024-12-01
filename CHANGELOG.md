@@ -1,3 +1,10 @@
+## 0.2
+
+### 0.2.0
+
+- \[Beta]: Added support for currency conversions
+- \[Beta]: Added basic dictionary
+
 ## 0.1
 
 ### 0.1.2
