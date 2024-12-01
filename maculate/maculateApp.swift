@@ -68,14 +68,15 @@ struct maculateApp: App {
             ContentView()
                 .modify {
                     if #available(macOS 15.0, iOS 18.0, *) {
-                        $0.modelContainer(for: ConversionRate.self)
+                        $0.modelContainer(for: [ConversionRate.self,HistoryItem.self])
+                    } else {
+                        $0.modelContainer(for: [HistoryItem.self])
                     }
                 }
 #if os(macOS)
                 .background(VisualEffect().ignoresSafeArea())
 #endif
         }
-        .modelContainer(for: HistoryItem.self)
 #if os(macOS)
         .windowStyle(.hiddenTitleBar)
         .commands {

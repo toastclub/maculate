@@ -44,7 +44,6 @@ struct ExpressionFieldView: View {
     
     var body: some View {
         TextField("Enter an expression", text: $text)
-            .frame(maxWidth: .infinity)
             .padding(.top,35)
             .padding(.bottom,10)
             .padding(.horizontal)

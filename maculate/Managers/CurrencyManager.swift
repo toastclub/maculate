@@ -34,11 +34,8 @@ struct ConversionRatesApiResponse: Codable {
 }
 
 @available(macOS 15, iOS 18, *)
-class CurrencyManager {
-    let modelContext: ModelContext
-    init(modelContext: ModelContext) {
-        self.modelContext = modelContext
-    }
+@ModelActor
+actor CurrencyManager {
     @AppStorage("lastUpdated") var lastUpdated = Date()
 
     // todo: fetch from toastcat servers

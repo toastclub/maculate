@@ -17,7 +17,6 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 0) {
             ExpressionFieldView()
-                .frame(maxWidth: .infinity)
             Divider().padding(0)
             if outputs.isEmpty {
                 VStack {
@@ -71,10 +70,12 @@ struct ContentView: View {
         .font(.system(size: 16))
         .onAppear {
             if #available(macOS 15.0, iOS 18.0, *) {
-                let currencyManager = CurrencyManager(modelContext: modelContext)
-                Task {
+                // todo: surely a better way to do this
+                let container = try! ModelContainer(for: ConversionRate.self,HistoryItem.self)
+                let currencyManager = CurrencyManager(modelContainer: container)
+                Task(priority: .low) {
                     await currencyManager.getConversionRates()
-                    currencyManager.injectConversionRates()
+                    await currencyManager.injectConversionRates()
                 }
             }
             if !hasEverInteracted {
