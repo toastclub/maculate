@@ -4,3 +4,4 @@ Makefile.in
 frameworks
 node_modules
 UserInterfaceState.xcuserstate
+target
