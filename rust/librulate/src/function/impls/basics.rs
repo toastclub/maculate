@@ -41,8 +41,6 @@ impl Function for Subtract {
     }
 }
 
-pub struct Power;
-
 fn execute_basic_operation<F>(
     args: Vec<MathStructure>,
     op: F,
