@@ -8,6 +8,7 @@ pub struct ExecuteOK {
 }
 
 pub trait Function {
+    fn name(&self) -> &str;
     /// - `product.execute(N(5), N(10), Var(x))` → `product(N(50), Var(x))`
     /// - `product.execute(N(5), N(10))` → `Var(50)`
     fn execute(&self, args: Vec<MathStructure>) -> Result<ExecuteOK, String>;
