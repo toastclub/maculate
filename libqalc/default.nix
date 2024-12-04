@@ -1,6 +1,12 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> {}, pkgsCross ? pkgs.pkgsCross, target ? "macOS" }:
 
-pkgs.stdenv.mkDerivation rec {
+let
+  platform = if target == "ios" then pkgsCross.iphone64 // {
+    darwinSdkVersion = "11.0";
+  }
+  else pkgs;
+in
+platform.stdenv.mkDerivation rec {
   pname = "libqalculate";
   version = "5.3.0";
 
@@ -16,20 +22,21 @@ pkgs.stdenv.mkDerivation rec {
     pkgs.pkg-config
     pkgs.autoreconfHook
   ];
-  depsBuildBuild = [
-    pkgs.stdenv.cc
+
+  buildInputs = with platform; [
+    gettext
+    libiconv
+    apple-sdk_11
   ];
 
-  buildInputs = [
-    pkgs.gettext
-    pkgs.libiconv
-  ];
-  propagatedBuildInputs = [
-    pkgs.libxml2
-    pkgs.mpfr
+
+  propagatedBuildInputs = with platform; [
+    libxml2
+    mpfr
     # we build icu statically to avoid dynamic linking to libcpp
-    pkgs.pkgsStatic.icu
-    pkgs.gmp
+    pkgsStatic.icu
+    gmp
+    apple-sdk_11
   ];
 
   configureFlags = [
@@ -47,12 +54,7 @@ pkgs.stdenv.mkDerivation rec {
     intltoolize -f
   '';
 
-  # this code is not relevant
-  patchPhase = ''
-    substituteInPlace libqalculate/Calculator-plot.cc \
-      --replace 'commandline = "gnuplot"' 'commandline = "${pkgs.gnuplot}/bin/gnuplot"' \
-      --replace '"gnuplot - ' '"${pkgs.gnuplot}/bin/gnuplot - '
-  '' + pkgs.lib.optionalString pkgs.stdenv.cc.isClang ''
+  patchPhase = pkgs.lib.optionalString pkgs.stdenv.cc.isClang ''
     substituteInPlace src/qalc.cc \
       --replace 'printf(_("aborted"))' 'printf("%s", _("aborted"))'
   '';
@@ -70,14 +72,14 @@ pkgs.stdenv.mkDerivation rec {
     rm -rf $out/share/doc
     rm -rf $out/share/locale
     mkdir -p $out/lib
-    for lib in ${pkgs.gmp.out}/lib/libgmp.dylib \
-        ${pkgs.mpfr.out}/lib/libmpfr.dylib \
-        ${pkgs.pkgsStatic.icu}/lib/libicuuc.a \
-        ${pkgs.pkgsStatic.icu}/lib/libicudata.a \
-        ${pkgs.pkgsStatic.icu}/lib/libicui18n.a \
-        ${pkgs.libxml2.out}/lib/libxml2.dylib \
-        ${pkgs.libiconv.out}/lib/libiconv.dylib \
-        ${pkgs.gettext.out}/lib/libintl.dylib; do
+    for lib in ${platform.gmp.out}/lib/libgmp.dylib \
+        ${platform.mpfr.out}/lib/libmpfr.dylib \
+        ${platform.pkgsStatic.icu}/lib/libicuuc.a \
+        ${platform.pkgsStatic.icu}/lib/libicudata.a \
+        ${platform.pkgsStatic.icu}/lib/libicui18n.a \
+        ${platform.libxml2.out}/lib/libxml2.dylib \
+        ${platform.libiconv.out}/lib/libiconv.dylib \
+        ${platform.gettext.out}/lib/libintl.dylib; do
       target=$(readlink "$lib" || basename "$lib")
       cp "$lib" "$out/lib/$target"
     done
