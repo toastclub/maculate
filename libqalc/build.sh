@@ -50,9 +50,12 @@ xcodebuild -create-xcframework \
     -headers result/include/mpfr.h \
     -output $FRAMEWORKS_DIR/MPFRIOS.xcframework
 # libxml2   headers: NOT needed
+# libxml2.2.dylib is a symlink to libxml2.2.13.5.dylib. Change libxml2.2.dylib to be a copy of libxml2.2.13.5.dylib
+rm build_ios/install/ios/libxml2/lib/libxml2.2.dylib
+cp build_ios/install/ios/libxml2/lib/libxml2.2.13.5.dylib build_ios/install/ios/libxml2/lib/libxml2.2.dylib
 xcodebuild -create-xcframework \
     -library result/lib/libxml2.2.dylib \
-    -library build_ios/install/ios/libxml2/lib/libxml2.2.13.5.dylib \
+    -library build_ios/install/ios/libxml2/lib/libxml2.2.dylib \
     -output $FRAMEWORKS_DIR/LibXML2.xcframework
 #libiconv   headers: NONE NOT NEEDED
 xcodebuild -create-xcframework \
@@ -117,6 +120,6 @@ find $FRAMEWORKS_DIR -name "*.dylib" -exec codesign --force \
 # qalculate fixups
 find $FRAMEWORKS_DIR -type d -exec chmod +w {} \;
 # fix the headers to be good
-find $FRAMEWORKS_DIR/LibQalculate.xcframework -name "*.h" \
-    -exec sed -i '' 's/<libqalculate\//</g' {} \;
-mv $FRAMEWORKS_DIR/LibQalculate.xcframework/macos-arm64/Headers/qalculate.h $FRAMEWORKS_DIR/LibQalculate.xcframework/macos-arm64/Headers/LibQalculate.h
+#find $FRAMEWORKS_DIR/LibQalculate.xcframework -name "*.h" \
+#    -exec sed -i '' 's/<libqalculate\//</g' {} \;
+#mv $FRAMEWORKS_DIR/LibQalculate.xcframework/macos-arm64/Headers/qalculate.h $FRAMEWORKS_DIR/LibQalculate.xcframework/macos-arm64/Headers/LibQalculate.h

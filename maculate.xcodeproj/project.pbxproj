@@ -614,6 +614,7 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+					"@executable_path/Frameworks",
 					"@executable_path",
 				);
 				LIBRARY_SEARCH_PATHS = (
@@ -655,6 +656,7 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+					"@executable_path/Frameworks",
 					"@executable_path",
 				);
 				LIBRARY_SEARCH_PATHS = (
