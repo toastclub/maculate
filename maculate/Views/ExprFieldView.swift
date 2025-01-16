@@ -10,12 +10,30 @@ import Qalculate
 import SwiftUIIntrospect
 import SwiftData
 
+#if os(iOS)
+class TextFieldDelegate: NSObject, UITextFieldDelegate {
+    
+    var shouldReturn: (() -> Bool)?
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if let shouldReturn = shouldReturn {
+            return shouldReturn()
+        }
+        else {
+            return true
+        }
+    }
+}
+#endif
+
 struct ExpressionFieldView: View {
     @State private var text: String = ""
 #if os(macOS)
     @State private var NSTextField: NSTextField?
 #else
     @State private var UITextField: UITextField?
+    var fieldDelegate = TextFieldDelegate()
 #endif
     @State private var cursorPosition: Int = 0
     @State private var relevantText: String?
@@ -39,21 +57,38 @@ struct ExpressionFieldView: View {
     ]
     
     @AppStorage("hasEverInteracted") var hasEverInteracted = false
-    
     @Environment(\.modelContext) var modelContext
     
     var body: some View {
         TextField("Enter an expression", text: $text)
+        #if os(macOS)
             .padding(.top,35)
+            .introspect(.textField, on: .macOS(.v14,.v15)) { textView in
+                DispatchQueue.main.async { NSTextField = textView }
+            }
+            .onSubmit {
+                calculateExpression()
+                self.text = ""
+            }
+        #else
+            .padding(.top,25)
+            .keyboardType(.numbersAndPunctuation)
+            .autocorrectionDisabled(true)
+            .autocapitalization(.none)
+            .introspect(.textField, on: .iOS(.v18)) { textView in
+                DispatchQueue.main.async { UITextField = textView }
+                fieldDelegate.shouldReturn = {
+                    calculateExpression()
+                    self.text = ""
+                    return false
+                }
+                textView.delegate = fieldDelegate
+            }
+        #endif
             .padding(.bottom,10)
             .padding(.horizontal)
             .textFieldStyle(.plain)
             .focusEffectDisabled()
-#if os(macOS)
-            .introspect(.textField, on: .macOS(.v14,.v15)) { textView in
-                DispatchQueue.main.async { NSTextField = textView }
-            }
-#endif
             .onChange(of: text) { oldValue, newValue in
 #if os(macOS)
                 if let NSTextField = NSTextField {
@@ -66,15 +101,12 @@ struct ExpressionFieldView: View {
 #else
                 if let UITextField = UITextField {
                     let cursorPosition = UITextField.selectedTextRange?.start
-                    //self.cursorPosition = cursorPosition?.utf16Offset(in: text) ?? 0
-                    //UITextField.selectedTextRange = UITextField.textRange(from: cursorPosition, to: cursorPosition)
+                    self.cursorPosition = UITextField.offset(from: UITextField.beginningOfDocument, to: cursorPosition ?? UITextField.beginningOfDocument)
+                    UITextField.selectedTextRange = UITextField.textRange(from: UITextField.position(from: UITextField.beginningOfDocument, offset: self.cursorPosition)!, to: UITextField.position(from: UITextField.beginningOfDocument, offset: self.cursorPosition)!)
                 }
 #endif
                 self.text = replaceSymbols(text: newValue)
                 relevantText = getReleventText(text: newValue)
-            }
-            .onSubmit {
-                calculateExpression()
             }
         #if os(macOS)
             .modify {

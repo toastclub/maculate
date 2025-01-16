@@ -164,6 +164,7 @@ export NOCONFIGURE=1
     --without-libcurl \
     --enable-unittests=no \
     --with-libiconv-prefix="${INSTALL_DIR}/ios/libiconv" \
+    --enable-compiled-definitions
 
 
 

@@ -17,6 +17,10 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 0) {
             ExpressionFieldView()
+#if os(iOS)
+                .font(.title2)
+                .background(Color(UIColor.systemGroupedBackground))
+#endif
             Divider().padding(0)
             if outputs.isEmpty {
                 VStack {
@@ -60,14 +64,17 @@ struct ContentView: View {
 #endif
             }
         }
+        
         .frame(
             maxWidth: .infinity,
             minHeight: 0,
             maxHeight: .infinity,
             alignment: .topLeading
         )
+#if os(macOS)
         .ignoresSafeArea()
         .font(.system(size: 16))
+#endif
         .onAppear {
             if #available(macOS 15.0, iOS 18.0, *) {
                 // todo: surely a better way to do this
