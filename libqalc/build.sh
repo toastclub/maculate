@@ -27,6 +27,7 @@ find $FRAMEWORKS_DIR -type d -exec chmod +w {} \;
 xcodebuild -create-xcframework \
     -library result/lib/libqalculate.a \
     -headers result/include/libqalculate/ \
+    -library build_ios/src/libqalculate/libqalculate/.libs/libqalculate.a \
     -output $FRAMEWORKS_DIR/LibQalculate.xcframework
 # gmp       headers: REQUIRED
 xcodebuild -create-xcframework \

@@ -89,7 +89,7 @@ configure_and_build_cmake() {
         cmake --install . --config Release
     else
         if [[ "$name" == "gmp" ]]; then
-            CPPFLAGS="-fembed-bitcode -arch arm64" ./configure --disable-assembly --host=arm-apple-darwin --prefix="${prefix}" --enable-static --disable-shared --with-mp-limb-size=64
+            CPPFLAGS="-fembed-bitcode -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/" ./configure --disable-assembly --host=arm-apple-darwin --prefix="${prefix}" --enable-static --disable-shared --with-mp-limb-size=64
         elif [[ "$name" == "mpfr" ]]; then
             ./configure \
                 --host=arm-apple-darwin \
@@ -99,9 +99,9 @@ configure_and_build_cmake() {
                 --with-gmp="${INSTALL_DIR}/ios/gmp" \
                 LDFLAGS="-arch arm64" \
                 CFLAGS="-arch arm64" \
-                CPPFLAGS="-fembed-bitcode -arch arm64"
+                CPPFLAGS="-fembed-bitcode -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/"
         else
-            ./configure --host=arm-apple-darwin --prefix="${prefix}" --enable-static --disable-shared
+            LDFLAGS="-arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk" CFLAGS="-arch arm64" CPPFLAGS="-fembed-bitcode -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/" ./configure --host=arm-apple-darwin --prefix="${prefix}" --enable-static --disable-shared
         fi
         make
         make install
@@ -136,22 +136,22 @@ INCLUDE_DIRS=(
     "${INSTALL_DIR}/ios/gmp/include"
     "${INSTALL_DIR}/ios/mpfr/include"
     "${INSTALL_DIR}/ios/libxml2/include"
-    "${INSTALL_DIR}/ios/gettext/include"
-    "${INSTALL_DIR}/ios/libiconv/include"
+    #"${INSTALL_DIR}/ios/gettext/include"
+    #"${INSTALL_DIR}/ios/libiconv/include"
     "${INSTALL_DIR}/ios/icu/include"
 )
 LIB_DIRS=(
     "${INSTALL_DIR}/ios/gmp/lib"
     "${INSTALL_DIR}/ios/mpfr/lib"
     "${INSTALL_DIR}/ios/libxml2/lib"
-    "${INSTALL_DIR}/ios/gettext/lib"
-    "${INSTALL_DIR}/ios/libiconv/lib"
+    #"${INSTALL_DIR}/ios/gettext/lib"
+    #"${INSTALL_DIR}/ios/libiconv/lib"
     "${INSTALL_DIR}/ios/icu/lib"
 )
 
 export CFLAGS="-fembed-bitcode -arch arm64 $(printf -- '-I%s ' "${INCLUDE_DIRS[@]}")"
-export LDFLAGS="-arch arm64 $(printf -- '-L%s ' "${LIB_DIRS[@]}")"
-export CPPFLAGS="-fembed-bitcode -arch arm64 $(printf -- '-I%s ' "${INCLUDE_DIRS[@]}")"
+export LDFLAGS="-arch arm64 $(printf -- '-L%s ' "${LIB_DIRS[@]}") -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/"
+export CPPFLAGS="-fembed-bitcode -arch arm64 $(printf -- '-I%s ' "${INCLUDE_DIRS[@]}") -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/"
 export NOCONFIGURE=1
 ./autogen.sh
 ./configure \
@@ -160,7 +160,9 @@ export NOCONFIGURE=1
     --enable-static \
     --disable-shared \
     --with-icu=no \
-    --with-readline=no
+    --with-readline=no \
+    --without-libcurl \
+    --enable-unittests=no \
 
 
 
