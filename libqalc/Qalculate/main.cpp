@@ -1,7 +1,7 @@
 // The purpose of this library is to delegate all unsafe operations to C++,
 // and keep the processing of safe data in Swift.
 
-#include "LibQalculate.h"
+#include "qalculate.h"
 #include "main.hpp"
 #include <iostream>
 #include <sstream>

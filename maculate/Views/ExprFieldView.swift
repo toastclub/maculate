@@ -49,9 +49,12 @@ struct ExpressionFieldView: View {
             .padding(.horizontal)
             .textFieldStyle(.plain)
             .focusEffectDisabled()
+#if os(macOS)
             .introspect(.textField, on: .macOS(.v14,.v15)) { textView in
                 DispatchQueue.main.async { NSTextField = textView }
-            }.onChange(of: text) { oldValue, newValue in
+            }
+#endif
+            .onChange(of: text) { oldValue, newValue in
 #if os(macOS)
                 if let NSTextField = NSTextField {
                     // This should be the cursor position
@@ -63,8 +66,8 @@ struct ExpressionFieldView: View {
 #else
                 if let UITextField = UITextField {
                     let cursorPosition = UITextField.selectedTextRange?.start
-                    self.cursorPosition = cursorPosition?.utf16Offset(in: text) ?? 0
-                    UITextField.selectedTextRange = UITextField.textRange(from: cursorPosition, to: cursorPosition)
+                    //self.cursorPosition = cursorPosition?.utf16Offset(in: text) ?? 0
+                    //UITextField.selectedTextRange = UITextField.textRange(from: cursorPosition, to: cursorPosition)
                 }
 #endif
                 self.text = replaceSymbols(text: newValue)
@@ -73,6 +76,7 @@ struct ExpressionFieldView: View {
             .onSubmit {
                 calculateExpression()
             }
+        #if os(macOS)
             .modify {
                 // The completion API is only available on macOS 15.0 and later.
                 if #available(macOS 15.0, *) {
@@ -91,6 +95,7 @@ struct ExpressionFieldView: View {
                     }
                 }
             }
+        #endif
     }
     
     func replaceSymbols(text: String) -> String {

@@ -72,12 +72,31 @@
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		202EDAAA2CF0DE9700426644 /* Exceptions for "Qalculate" folder in "Qalculate" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			platformFiltersByRelativePath = {
+				frameworks/GMP.xcframework = (macos, );
+				frameworks/GMPiOS.xcframework = (ios, );
+				frameworks/ICUicudata.xcframework = (macos, );
+				frameworks/ICUicui18n.xcframework = (macos, );
+				frameworks/ICUicuuc.xcframework = (macos, );
+				frameworks/LibIconv.xcframework = (macos, );
+				frameworks/LibIconvIOS.xcframework = (ios, );
+				frameworks/LibIntl.xcframework = (macos, );
+				frameworks/MPFR.xcframework = (macos, );
+				frameworks/MPFRIOS.xcframework = (ios, );
+			};
 			publicHeaders = (
 				graphing.hpp,
 				main.hpp,
 				Qalculate.hpp,
 			);
 			target = 202EDA9F2CF0DE9700426644 /* Qalculate */;
+		};
+		2037B6F62D38F83C0019B424 /* Exceptions for "maculate" folder in "Maculate" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			platformFiltersByRelativePath = {
+				Info.plist = (macos, );
+			};
+			target = 202436BE2CF032AE00734E77 /* Maculate */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -99,12 +118,21 @@
 				frameworks/LibXML2.xcframework,
 				frameworks/MPFR.xcframework,
 			);
+			platformFiltersByRelativePath = {
+				frameworks/GMP.xcframework = (macos, );
+				frameworks/LibIconv.xcframework = (macos, );
+				frameworks/LibIntl.xcframework = (macos, );
+				frameworks/MPFR.xcframework = (macos, );
+			};
 		};
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		202436C12CF032AE00734E77 /* maculate */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				2037B6F62D38F83C0019B424 /* Exceptions for "maculate" folder in "Maculate" target */,
+			);
 			path = maculate;
 			sourceTree = "<group>";
 		};
@@ -578,7 +606,6 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"maculate/Preview Content\"";
 				DEVELOPMENT_TEAM = APTCP6Z8HA;
-				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -620,7 +647,6 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_ASSET_PATHS = "\"maculate/Preview Content\"";
 				DEVELOPMENT_TEAM = APTCP6Z8HA;
-				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;

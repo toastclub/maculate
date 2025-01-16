@@ -137,7 +137,7 @@ INCLUDE_DIRS=(
     "${INSTALL_DIR}/ios/mpfr/include"
     "${INSTALL_DIR}/ios/libxml2/include"
     #"${INSTALL_DIR}/ios/gettext/include"
-    #"${INSTALL_DIR}/ios/libiconv/include"
+    "${INSTALL_DIR}/ios/libiconv/include"
     "${INSTALL_DIR}/ios/icu/include"
 )
 LIB_DIRS=(
@@ -145,7 +145,7 @@ LIB_DIRS=(
     "${INSTALL_DIR}/ios/mpfr/lib"
     "${INSTALL_DIR}/ios/libxml2/lib"
     #"${INSTALL_DIR}/ios/gettext/lib"
-    #"${INSTALL_DIR}/ios/libiconv/lib"
+    "${INSTALL_DIR}/ios/libiconv/lib"
     "${INSTALL_DIR}/ios/icu/lib"
 )
 
@@ -163,6 +163,7 @@ export NOCONFIGURE=1
     --with-readline=no \
     --without-libcurl \
     --enable-unittests=no \
+    --with-libiconv-prefix="${INSTALL_DIR}/ios/libiconv" \
 
 
 

@@ -34,19 +34,38 @@ xcodebuild -create-xcframework \
     -library result/lib/libgmp.10.dylib \
     -headers result/include/gmp.h \
     -output $FRAMEWORKS_DIR/GMP.xcframework
+# gmp_ios  headers: REQUIRED
+xcodebuild -create-xcframework \
+    -library build_ios/install/ios/gmp/lib/libgmp.a \
+    -headers result/include/gmp.h \
+    -output $FRAMEWORKS_DIR/GMPiOS.xcframework
 # mpfr      headers: REQUIRED
 xcodebuild -create-xcframework \
     -library result/lib/libmpfr.6.dylib \
     -headers result/include/mpfr.h \
     -output $FRAMEWORKS_DIR/MPFR.xcframework
+# mpfr_ios  headers: REQUIRED
+xcodebuild -create-xcframework \
+    -library build_ios/install/ios/mpfr/lib/libmpfr.a \
+    -headers result/include/mpfr.h \
+    -output $FRAMEWORKS_DIR/MPFRIOS.xcframework
 # libxml2   headers: NOT needed
 xcodebuild -create-xcframework \
     -library result/lib/libxml2.2.dylib \
+    -library build_ios/install/ios/libxml2/lib/libxml2.2.13.5.dylib \
     -output $FRAMEWORKS_DIR/LibXML2.xcframework
 #libiconv   headers: NONE NOT NEEDED
 xcodebuild -create-xcframework \
     -library result/lib/libiconv.2.dylib \
     -output $FRAMEWORKS_DIR/LibIconv.xcframework
+#libiconv_ios headers: NOT NEEDED
+xcodebuild -create-xcframework \
+    -library build_ios/install/ios/libiconv/lib/libiconv.a \
+    -output $FRAMEWORKS_DIR/LibIconvIOS.xcframework
+#libiconv_ios headers: NOT NEEDED
+xcodebuild -create-xcframework \
+    -library build_ios/install/ios/libiconv/lib/libiconv.a \
+    -output $FRAMEWORKS_DIR/LibIconvIOS.xcframework
 #libintl    headers: NOT NEEDED
 xcodebuild -create-xcframework \
     -library result/lib/libintl.8.dylib \
