@@ -12,11 +12,11 @@ import SwiftData
 
 #if os(iOS)
 class TextFieldDelegate: NSObject, UITextFieldDelegate {
-    
+
     var shouldReturn: (() -> Bool)?
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
+
         if let shouldReturn = shouldReturn {
             return shouldReturn()
         }
@@ -37,7 +37,7 @@ struct ExpressionFieldView: View {
 #endif
     @State private var cursorPosition: Int = 0
     @State private var relevantText: String?
-    
+
     let replacementMap = [
         "functions": [
             "integrate": "∫",
@@ -49,19 +49,17 @@ struct ExpressionFieldView: View {
         "constants": [
             "pi": "π",
             "tau": "τ",
-            "plastic": "ρ",
             "rho": "ρ",
             "phi": "φ",
-            "euler": "γ",
         ],
     ]
-    
+
     @AppStorage("hasEverInteracted") var hasEverInteracted = false
     @Environment(\.modelContext) var modelContext
-    
+
     var body: some View {
         TextField("Enter an expression", text: $text)
-        #if os(macOS)
+#if os(macOS)
             .padding(.top,35)
             .introspect(.textField, on: .macOS(.v14,.v15)) { textView in
                 DispatchQueue.main.async { NSTextField = textView }
@@ -70,7 +68,25 @@ struct ExpressionFieldView: View {
                 calculateExpression()
                 self.text = ""
             }
-        #else
+            .modify {
+                // The completion API is only available on macOS 15.0 and later.
+                if #available(macOS 15.0, *) {
+                    $0.textInputSuggestions {
+                        if let relevantText = relevantText {
+                            let completions = getCompletions(std.string(relevantText)).sorted { $0.name.count < $1.name.count }
+                            ForEach(completions, id: \.name) { suggestion in
+                                let theoreticalChange = self.theoreticalChange(completion: String(suggestion.name))
+                                HStack {
+                                    Text(String(suggestion.name))
+                                    Spacer()
+                                    Text(String(suggestion.description)).foregroundColor(.secondary)
+                                }.textInputCompletion(theoreticalChange)
+                            }
+                        }
+                    }
+                }
+            }
+#else
             .padding(.top,25)
             .keyboardType(.numbersAndPunctuation)
             .autocorrectionDisabled(true)
@@ -84,7 +100,32 @@ struct ExpressionFieldView: View {
                 }
                 textView.delegate = fieldDelegate
             }
-        #endif
+            .toolbar {
+                if let relevantText = relevantText {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 8) { // Adjust spacing as needed
+                                let completions = getCompletions(std.string(relevantText))
+                                        .sorted { $0.name.count < $1.name.count }
+                                        .map {
+                                            return (name: String($0.name), description: String($0.description))
+                                        }
+                                ForEach(completions, id: \.name) { suggestion in
+                                    Button {
+                                        self.text = theoreticalChange(completion: suggestion.name)
+                                    } label: {
+                                        Text(suggestion.name)
+                                    }.buttonStyle(.plain)
+                                }
+                            }
+                        }
+                        .font(.system(.callout, design: .monospaced))
+                        .padding(EdgeInsets(top: 0, leading: -10, bottom: 0, trailing: -10))
+                        .transition(.move(edge: .bottom))
+                    }
+                }
+            }
+#endif
             .padding(.bottom,10)
             .padding(.horizontal)
             .textFieldStyle(.plain)
@@ -108,39 +149,19 @@ struct ExpressionFieldView: View {
                 self.text = replaceSymbols(text: newValue)
                 relevantText = getReleventText(text: newValue)
             }
-        #if os(macOS)
-            .modify {
-                // The completion API is only available on macOS 15.0 and later.
-                if #available(macOS 15.0, *) {
-                    $0.textInputSuggestions {
-                        if let relevantText = relevantText {
-                            let completions = getCompletions(std.string(relevantText)).sorted { $0.name.count < $1.name.count }
-                            ForEach(completions, id: \.name) { suggestion in
-                                let theoreticalChange = self.theoreticalChange(completion: String(suggestion.name))
-                                HStack {
-                                    Text(String(suggestion.name))
-                                    Spacer()
-                                    Text(String(suggestion.description)).foregroundColor(.secondary)
-                                }.textInputCompletion(theoreticalChange)
-                            }
-                        }
-                    }
-                }
-            }
-        #endif
     }
-    
+
     func replaceSymbols(text: String) -> String {
         guard cursorPosition > 0 else { return text }
-        
+
         var updatedText = text
-        
+
         /// Check if the range is preceded by a non-letter character.
         func isPrecededByNonLetter(_ range: Range<String.Index>, in text: String) -> Bool {
             guard range.lowerBound > text.startIndex else { return true }
             return !text[text.index(before: range.lowerBound)].isLetter
         }
-        
+
         /// Check if the range is followed by specific valid characters.
         func isFollowedBy(_ range: Range<String.Index>, in text: String, validCharacters: [Character]) -> Bool {
             guard range.upperBound < text.endIndex else { return false }
@@ -150,7 +171,7 @@ struct ExpressionFieldView: View {
              range.upperBound < text.index(before: text.endIndex) &&
              validCharacters.contains(text[text.index(after: range.upperBound)]))
         }
-        
+
         /// Helper function to handle replacements based on specific rules.
         func replaceMatchingSymbols(from map: [String: String], validFollowingCharacters: [Character]) {
             for (key, symbol) in map {
@@ -163,13 +184,13 @@ struct ExpressionFieldView: View {
                 }
             }
         }
-        
+
         // Check for functions (followed by `(`)
         replaceMatchingSymbols(from: replacementMap["functions"] ?? [:], validFollowingCharacters: ["("])
-        
+
         // Check for constants (followed by operators)
         replaceMatchingSymbols(from: replacementMap["constants"] ?? [:], validFollowingCharacters: ["*", "-", "/", "+", "^"])
-        
+
         return updatedText
     }
 

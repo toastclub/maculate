@@ -40,11 +40,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 }
 
 struct VisualEffect: NSViewRepresentable {
+    @Binding var window: NSWindow?
     func makeNSView(context: Self.Context) -> NSView {
         let view = NSVisualEffectView()
         view.material = .sidebar
         view.blendingMode = .behindWindow
         view.state = .active
+        DispatchQueue.main.async {
+            window = view.window
+        }
         return view
     }
     func updateNSView(_ nsView: NSView, context: Context) { }
@@ -56,12 +60,26 @@ enum AngleUnit: String, CaseIterable, Identifiable {
     var id: String { self.rawValue }
 }
 
+extension EnvironmentValues {
+    var window: NSWindow? {
+        get { self[WindowKey.self] }
+        set { self[WindowKey.self] = newValue }
+    }
+}
+
+struct WindowKey: EnvironmentKey {
+    static var defaultValue: NSWindow? { nil }
+}
+
 @main
 struct maculateApp: App {
 #if os(macOS)
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 #endif
     @AppStorage("angleUnit") var angleUnit = AngleUnit.degrees
+    @Environment(\.window) var windowEnv: NSWindow?
+    @State var window: NSWindow? = nil
+    @State var pinning = false
 
     var body: some Scene {
         WindowGroup {
@@ -74,7 +92,13 @@ struct maculateApp: App {
                     }
                 }
 #if os(macOS)
-                .background(VisualEffect().ignoresSafeArea())
+                .background(VisualEffect(window: $window).ignoresSafeArea())
+                .environment(\.window, window)
+                .onChange(of: pinning) { isPinning in
+                    if let window = window {
+                        window.level = isPinning ? .floating : .normal
+                    }
+                }
 #endif
         }
 #if os(macOS)
@@ -94,6 +118,9 @@ struct maculateApp: App {
                             Text(unit.rawValue.capitalized).tag(unit)
                         }
                     }
+                }
+                Section {
+                    Toggle("Pin to Top", isOn: $pinning)
                 }
             }
         }

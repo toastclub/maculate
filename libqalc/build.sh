@@ -50,13 +50,13 @@ xcodebuild -create-xcframework \
     -headers result/include/mpfr.h \
     -output $FRAMEWORKS_DIR/MPFRIOS.xcframework
 # libxml2   headers: NOT needed
-# libxml2.2.dylib is a symlink to libxml2.2.13.5.dylib. Change libxml2.2.dylib to be a copy of libxml2.2.13.5.dylib
-rm build_ios/install/ios/libxml2/lib/libxml2.2.dylib
-cp build_ios/install/ios/libxml2/lib/libxml2.2.13.5.dylib build_ios/install/ios/libxml2/lib/libxml2.2.dylib
 xcodebuild -create-xcframework \
     -library result/lib/libxml2.2.dylib \
-    -library build_ios/install/ios/libxml2/lib/libxml2.2.dylib \
     -output $FRAMEWORKS_DIR/LibXML2.xcframework
+# libxml2_ios headers: NOT needed
+xcodebuild -create-xcframework \
+    -library build_ios/install/ios/libxml2/lib/libxml2.a \
+    -output $FRAMEWORKS_DIR/LibXML2IOS.xcframework
 #libiconv   headers: NONE NOT NEEDED
 xcodebuild -create-xcframework \
     -library result/lib/libiconv.2.dylib \

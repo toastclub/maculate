@@ -77,6 +77,7 @@ configure_and_build_cmake() {
                 -DLIBXML2_WITH_MODULES=OFF \
                 -DLIBXML2_WITH_ICONV=OFF \
                 -DLIBXML2_WITH_PYTHON=OFF \
+                -DBUILD_SHARED_LIBS=OFF
         else
             cmake .. \
                 -DCMAKE_TOOLCHAIN_FILE=../../../ios-cmake/ios.toolchain.cmake \
@@ -165,7 +166,6 @@ export NOCONFIGURE=1
     --enable-unittests=no \
     --with-libiconv-prefix="${INSTALL_DIR}/ios/libiconv" \
     --enable-compiled-definitions
-
 
 
 make -j$(sysctl -n hw.ncpu)

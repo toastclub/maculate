@@ -81,6 +81,8 @@
 				frameworks/LibIconv.xcframework = (macos, );
 				frameworks/LibIconvIOS.xcframework = (ios, );
 				frameworks/LibIntl.xcframework = (macos, );
+				frameworks/LibXML2.xcframework = (macos, );
+				frameworks/LibXML2IOS.xcframework = (ios, );
 				frameworks/MPFR.xcframework = (macos, );
 				frameworks/MPFRIOS.xcframework = (ios, );
 			};
@@ -122,6 +124,7 @@
 				frameworks/GMP.xcframework = (macos, );
 				frameworks/LibIconv.xcframework = (macos, );
 				frameworks/LibIntl.xcframework = (macos, );
+				frameworks/LibXML2.xcframework = (macos, );
 				frameworks/MPFR.xcframework = (macos, );
 			};
 		};

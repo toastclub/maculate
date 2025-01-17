@@ -91,6 +91,7 @@ struct ContentView: View {
                 modelContext.insert(HistoryItem(expression: "∫(x^2 + 2x + 1)", result: "<i>x</i><sup>3</sup>/2 + x<sup>2</sup> + x + C", messages: [],specialStatus: [.tutorial]))
                 modelContext.insert(HistoryItem(expression: "1978 to roman", result: "MCMLXXVIII",messages: [],specialStatus: [.tutorial]))
                 modelContext.insert(HistoryItem(expression: "50 Ω * 2 A", result: "100 V", messages: [],specialStatus: [.tutorial]))
+                self.hasEverInteracted = true
             }
         }
     }
