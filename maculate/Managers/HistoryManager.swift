@@ -30,12 +30,15 @@ class HistoryItem: Equatable,Hashable {
     var messages: [Messages]
     var specialStatus: [SpecialStatuses]?
     var date: Date = Date()
+    var starred: Bool = false
+    var tape: String = ""
     
     init(expression: String, result: String, messages: [Messages], specialStatus: [SpecialStatuses]? = nil) {
         self.expression = expression
         self.result = result
         self.messages = messages
         self.specialStatus = specialStatus
+        self.starred = false
     }
     
     static func == (lhs: HistoryItem, rhs: HistoryItem) -> Bool {

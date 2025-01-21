@@ -83,13 +83,23 @@ func styledOutput(_ text: String) -> AttributedString {
 
 struct OutputView: View {
     var item: HistoryItem
+    @Environment(\.modelContext) var modelContext
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(item.expression)
-                .fontDesign(.monospaced)
-                .padding([.leading,.trailing])
-                .textSelection(.enabled)
+            HStack {
+                Text(item.expression)
+                    .fontDesign(.monospaced)
+                    .padding([.leading,.trailing])
+                    .textSelection(.enabled)
+                if item.starred {
+                    Spacer()
+                    Image(systemName: "star.fill")
+                        .foregroundColor(.yellow)
+                        .font(.caption)
+                        .padding(.trailing)
+                }
+            }
             Text(styledOutput(item.result))
                 .padding([.leading,.trailing])
                 .frame(maxWidth: .infinity, alignment: .trailing)
@@ -120,5 +130,22 @@ struct OutputView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .transition(.move(edge: .top))
+        .contextMenu {
+            Button("Copy Expression") {
+                NSPasteboard.general.clearContents()
+                NSPasteboard.general.setString(item.expression, forType: .string)
+            }
+            Button("Copy Result") {
+                NSPasteboard.general.clearContents()
+                NSPasteboard.general.setString(item.result, forType: .string)
+            }
+            Divider()
+            Button("Star", systemImage: item.starred ? "star.fill" : "star") {
+                item.starred.toggle()
+            }
+            Button("Delete", systemImage: "trash", role: .destructive) {
+                modelContext.delete(item)
+            }
+        }
     }
 }
