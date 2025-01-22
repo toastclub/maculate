@@ -16,3 +16,4 @@ FOUNDATION_EXPORT const unsigned char QalculateFrameworkVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <QalculateFramework/PublicHeader.h>
 
 #include <Qalculate/main.hpp>
+#include <Qalculate/dict.hpp>

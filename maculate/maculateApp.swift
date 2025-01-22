@@ -77,11 +77,17 @@ struct maculateApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 #endif
     @AppStorage("angleUnit") var angleUnit = AngleUnit.degrees
+    
     @Environment(\.window) var windowEnv: NSWindow?
+    @Environment(\.openWindow) var openWindow
+    
     @State var window: NSWindow? = nil
     @State var pinning = false
 
     var body: some Scene {
+        Window("Dictionary", id: "dictionary") {
+            DictionaryView()
+        }
         WindowGroup {
             ContentView()
                 .modify {
@@ -121,6 +127,14 @@ struct maculateApp: App {
                 }
                 Section {
                     Toggle("Pin to Top", isOn: $pinning)
+                }
+            }
+            // add to the window menu
+            CommandGroup(before: .windowList) {
+                Button(action: {
+                    openWindow(id: "dictionary")
+                }) {
+                    Text("Dictionary")
                 }
             }
         }

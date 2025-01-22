@@ -6,6 +6,7 @@
 //
 
 #include "qalculate.h"
+#include "internal.hpp"
 #include "dict.hpp"
 
 std::string to_html_escaped(const std::string strpre)
@@ -22,13 +23,13 @@ std::string to_html_escaped(const std::string strpre)
     gsub("&", "&amp;", str);
     gsub("<", "&lt;", str);
     gsub(">", "&gt;", str);
-    gsub("\n", "<br>", str);
+    gsub("\n", "\n", str);
     return str;
 }
 
 DictItems getDictItems(DictType type)
 {
-    Calculator *calc = CALCULATOR;
+    Calculator *calc = getCalculator();
     DictItems items;
 
     auto processItems = [&items](auto &container)
@@ -49,6 +50,11 @@ DictItems getDictItems(DictType type)
         break;
     }
 
+    // print items
+    for (auto &item : items)
+    {
+        std::cout << item.key << " " << item.value << " " << item.categories << std::endl;
+    }
     return items;
 }
 
@@ -58,9 +64,9 @@ std::string generateFunctionBody(MathFunction *f)
     // The function name
     std::string str = "";
     const ExpressionName *ename = &f->preferredName();
-    str = "<b><i>";
+    str = "***";
     str += ename->formattedName(TYPE_FUNCTION, true, true);
-    str += "</b>(";
+    str += "**(";
     // Add arguments
     int iargs = f->maxargs();
     if (iargs < 0)
@@ -95,26 +101,26 @@ std::string generateFunctionBody(MathFunction *f)
     // Add alternative names
     for (size_t i = 1; i <= f->countNames(); i++)
         if (&f->getName(i) != ename)
-            str += "<br>" + f->getName(i).formattedName(TYPE_FUNCTION, true, true);
-    str += "</i><br>";
+            str += "\n" + f->getName(i).formattedName(TYPE_FUNCTION, true, true);
+    str += "*\n";
     // Add description
     if (!f->description().empty())
     {
-        str += "<br>" + to_html_escaped(f->description()) + "<br>";
+        str += "\n" + to_html_escaped(f->description()) + "\n";
     }
     // Add example
     if (!f->example(true).empty())
-        str += "<br>Example: " + to_html_escaped(f->example(false, ename->formattedName(TYPE_FUNCTION, true)));
-    +"<br>";
+        str += "\nExample: " + to_html_escaped(f->example(false, ename->formattedName(TYPE_FUNCTION, true)));
+    +"\n";
     // Add copyright
     if (f->subtype() == SUBTYPE_DATA_SET && !((DataSet *)f)->copyright().empty())
-        str += "<br>" + to_html_escaped(((DataSet *)f)->copyright()) + "<br>";
+        str += "\n" + to_html_escaped(((DataSet *)f)->copyright()) + "\n";
 
     Argument default_arg;
     Argument *arg;
     if (iargs)
     {
-        str += "<br><b>Arguments:</b><br>";
+        str += "\n**Arguments:**\n";
         for (int i = 1; i <= iargs; i++)
         {
             arg = f->getArgumentDefinition(i);
@@ -122,7 +128,7 @@ std::string generateFunctionBody(MathFunction *f)
                 str += arg->name();
             else
                 str += i2s(i);
-            str += ": <i>";
+            str += ": *";
             if (arg)
                 str += arg->printlong();
             else
@@ -146,19 +152,19 @@ std::string generateFunctionBody(MathFunction *f)
                 }
                 str += ")";
             }
-            str += "</i><br>";
+            str += "*\n";
         }
     }
     if (!f->condition().empty())
     {
-        str += "<br>Required Condition:" + to_html_escaped(f->printCondition()) + "<br>";
+        str += "\nRequired Condition:" + to_html_escaped(f->printCondition()) + "\n";
     }
     return str;
 }
 
 std::string getBodyForItem(const DictItem &item)
 {
-    Calculator *calc = CALCULATOR;
+    Calculator *calc = getCalculator();
     std::string str = "";
     switch (item.type)
     {
