@@ -42,5 +42,5 @@ Please note that the server is licensed under the AGPLv3, wheras the rest of the
 |                         | macOS | iOS  | iPadOS | Notes                                |
 | ----------------------- | ----- | ---- | ------ | ------------------------------------ |
 | macOS 15 <br/> iOS 18   | ✅    | ✅ | ⏱️⚠️   |                 |
-| macOS 14 <br/> iOS 17   | ⚠️    | ✅⚠️ | ⏱️⚠️   | No plots, completion on macOS, and currencies |
+| macOS 14 <br/> iOS 17   | ⚠️    | ⚠️ | ⏱️⚠️   | No plots, completion on macOS, and currencies |
 | macOS <14 <br/> iOS <17 | ❌    | ❌   | ❌     | Never Supported                      |
