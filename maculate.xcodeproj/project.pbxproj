@@ -87,6 +87,7 @@
 				frameworks/MPFRIOS.xcframework = (ios, );
 			};
 			publicHeaders = (
+				dict.hpp,
 				graphing.hpp,
 				main.hpp,
 				Qalculate.hpp,
