@@ -10,7 +10,7 @@ It supports just about anything you could imagine, including hundreds of units a
 
 For a full list of features, refer to the Qalculate documentation. Please note that Maculate does not currently support the following features: plotting, loading & exporting datasets, real time currency conversion
 
-Due to the reoccuring expenses associated with Apple development, Maculate builds will be made available on the App Store, for \$6.99. The current intent is to distribute 50\% of the proceeds to various open source projects, after \$600 in yearly expenses are covered.
+Due to the reoccuring expenses associated with Apple development, Maculate builds will be made available on the App Store, for \$4.99. The current intent is to distribute 50\% of the proceeds to various open source projects, after \$600 in yearly expenses are covered.
 
 ## Building
 
