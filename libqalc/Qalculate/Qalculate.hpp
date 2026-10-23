@@ -17,3 +17,4 @@ FOUNDATION_EXPORT const unsigned char QalculateFrameworkVersionString[];
 
 #include <Qalculate/main.hpp>
 #include <Qalculate/dict.hpp>
+#include <Qalculate/graphing.hpp>

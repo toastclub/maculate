@@ -8,6 +8,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 func styledOutput(_ text: String) -> AttributedString {
     var text = text
@@ -132,12 +133,20 @@ struct OutputView: View {
         .transition(.move(edge: .top))
         .contextMenu {
             Button("Copy Expression") {
+#if os(macOS)
                 NSPasteboard.general.clearContents()
                 NSPasteboard.general.setString(item.expression, forType: .string)
+#else
+                UIPasteboard.general.string = item.expression
+#endif
             }
             Button("Copy Result") {
+#if os(macOS)
                 NSPasteboard.general.clearContents()
                 NSPasteboard.general.setString(item.result, forType: .string)
+#else
+                UIPasteboard.general.string = item.result
+#endif
             }
             Divider()
             Button("Star", systemImage: item.starred ? "star.fill" : "star") {

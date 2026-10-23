@@ -78,11 +78,6 @@
 				frameworks/ICUicudata.xcframework = (macos, );
 				frameworks/ICUicui18n.xcframework = (macos, );
 				frameworks/ICUicuuc.xcframework = (macos, );
-				frameworks/LibIconv.xcframework = (macos, );
-				frameworks/LibIconvIOS.xcframework = (ios, );
-				frameworks/LibIntl.xcframework = (macos, );
-				frameworks/LibXML2.xcframework = (macos, );
-				frameworks/LibXML2IOS.xcframework = (ios, );
 				frameworks/MPFR.xcframework = (macos, );
 				frameworks/MPFRIOS.xcframework = (ios, );
 			};
@@ -102,34 +97,6 @@
 			target = 202436BE2CF032AE00734E77 /* Maculate */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		205A14E62CF7915700F56A00 /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Qalculate" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			attributesByRelativePath = {
-				frameworks/GMP.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-				frameworks/LibIconv.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-				frameworks/LibIntl.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-				frameworks/LibXML2.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-				frameworks/MPFR.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
-			};
-			buildPhase = 205A14E52CF7915700F56A00 /* Embed Frameworks */;
-			membershipExceptions = (
-				frameworks/GMP.xcframework,
-				frameworks/LibIconv.xcframework,
-				frameworks/LibIntl.xcframework,
-				frameworks/LibXML2.xcframework,
-				frameworks/MPFR.xcframework,
-			);
-			platformFiltersByRelativePath = {
-				frameworks/GMP.xcframework = (macos, );
-				frameworks/LibIconv.xcframework = (macos, );
-				frameworks/LibIntl.xcframework = (macos, );
-				frameworks/LibXML2.xcframework = (macos, );
-				frameworks/MPFR.xcframework = (macos, );
-			};
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		202436C12CF032AE00734E77 /* maculate */ = {
@@ -154,7 +121,6 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				202EDAAA2CF0DE9700426644 /* Exceptions for "Qalculate" folder in "Qalculate" target */,
-				205A14E62CF7915700F56A00 /* Exceptions for "Qalculate" folder in "Embed Frameworks" phase from "Qalculate" target */,
 			);
 			explicitFileTypes = {
 				main.hpp = sourcecode.cpp.h;
@@ -532,6 +498,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 15.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -590,6 +557,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 15.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -604,9 +572,12 @@
 				ARCHS = arm64;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = maculate/maculate.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = maculate/maculate.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				"CODE_SIGN_STYLE[sdk=macosx*]" = Manual;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
+				CURRENT_PROJECT_VERSION = 13;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"maculate/Preview Content\"";
 				DEVELOPMENT_TEAM = APTCP6Z8HA;
@@ -624,10 +595,9 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/libqalc/result/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.3;
-				MARKETING_VERSION = 0.1.1;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.toastcat.maculate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -636,7 +606,7 @@
 				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/result/include";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/libqalc/result/include";
 			};
 			name = Debug;
 		};
@@ -646,9 +616,9 @@
 				ARCHS = arm64;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = maculate/maculate.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = maculate/maculate.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_ASSET_PATHS = "\"maculate/Preview Content\"";
@@ -667,10 +637,9 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/libqalc/result/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.3;
-				MARKETING_VERSION = 0.1.1;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.toastcat.maculate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -679,7 +648,7 @@
 				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/result/include";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/libqalc/result/include";
 			};
 			name = Release;
 		};
@@ -687,7 +656,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_STYLE[sdk=macosx*]" = Manual;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = APTCP6Z8HA;
@@ -724,7 +696,10 @@
 		202436EB2CF032B000734E77 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_STYLE[sdk=macosx*]" = Manual;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = APTCP6Z8HA;
@@ -732,9 +707,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.toastcat.maculate.maculateUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = maculate;
+				TEST_TARGET_NAME = Maculate;
 			};
 			name = Debug;
 		};
@@ -749,9 +725,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.toastcat.maculate.maculateUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = maculate;
+				TEST_TARGET_NAME = Maculate;
 			};
 			name = Release;
 		};
@@ -761,8 +738,10 @@
 				ARCHS = arm64;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_STYLE[sdk=macosx*]" = Manual;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
@@ -786,6 +765,7 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = "$(inherited) -lxml2 -liconv";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toastcat.maculate.QalculateFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -828,6 +808,7 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = "$(inherited) -lxml2 -liconv";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toastcat.maculate.QalculateFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -898,7 +879,7 @@
 			repositoryURL = "https://github.com/siteline/swiftui-introspect";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.0;
+				minimumVersion = 27.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

@@ -7,33 +7,15 @@
 
 import SwiftUI
 import Qalculate
+#if os(macOS)
 import SwiftUIIntrospect
-import SwiftData
-
-#if os(iOS)
-class TextFieldDelegate: NSObject, UITextFieldDelegate {
-
-    var shouldReturn: (() -> Bool)?
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-
-        if let shouldReturn = shouldReturn {
-            return shouldReturn()
-        }
-        else {
-            return true
-        }
-    }
-}
 #endif
+import SwiftData
 
 struct ExpressionFieldView: View {
     @State private var text: String = ""
 #if os(macOS)
     @State private var NSTextField: NSTextField?
-#else
-    @State private var UITextField: UITextField?
-    var fieldDelegate = TextFieldDelegate()
 #endif
     @State private var cursorPosition: Int = 0
     @State private var relevantText: String?
@@ -58,10 +40,11 @@ struct ExpressionFieldView: View {
     @Environment(\.modelContext) var modelContext
 
     var body: some View {
-        TextField("Enter an expression", text: $text)
+        Group {
 #if os(macOS)
+        TextField("Enter an expression", text: $text)
             .padding(.top,35)
-            .introspect(.textField, on: .macOS(.v14,.v15)) { textView in
+            .introspect(.textField, on: .macOS(.v14, .v15, .v26, .v27)) { textView in
                 DispatchQueue.main.async { NSTextField = textView }
             }
             .onSubmit {
@@ -87,19 +70,11 @@ struct ExpressionFieldView: View {
                 }
             }
 #else
+        ExpressionTextField(text: $text, cursorPosition: $cursorPosition) {
+            calculateExpression()
+            self.text = ""
+        }
             .padding(.top,25)
-            .keyboardType(.numbersAndPunctuation)
-            .autocorrectionDisabled(true)
-            .autocapitalization(.none)
-            .introspect(.textField, on: .iOS(.v18)) { textView in
-                DispatchQueue.main.async { UITextField = textView }
-                fieldDelegate.shouldReturn = {
-                    calculateExpression()
-                    self.text = ""
-                    return false
-                }
-                textView.delegate = fieldDelegate
-            }
             .toolbar {
                 if let relevantText = relevantText {
                     ToolbarItemGroup(placement: .keyboard) {
@@ -126,6 +101,7 @@ struct ExpressionFieldView: View {
                 }
             }
 #endif
+        }
             .padding(.bottom,10)
             .padding(.horizontal)
             .textFieldStyle(.plain)
@@ -134,25 +110,21 @@ struct ExpressionFieldView: View {
 #if os(macOS)
                 if let NSTextField = NSTextField {
                     // This should be the cursor position
-                    let cursorPosition = NSTextField.currentEditor()?.selectedRange.location ?? 0
+                    let selection = NSTextField.currentEditor()?.selectedRange.location ?? 0
+                    let cursorPosition = String(decoding: newValue.utf16.prefix(selection), as: UTF16.self).count
                     self.cursorPosition = cursorPosition
                     // why did i write this? is it necessary?
-                    NSTextField.currentEditor()?.selectedRange = NSRange(location: self.cursorPosition, length: 0)
-                }
-#else
-                if let UITextField = UITextField {
-                    let cursorPosition = UITextField.selectedTextRange?.start
-                    self.cursorPosition = UITextField.offset(from: UITextField.beginningOfDocument, to: cursorPosition ?? UITextField.beginningOfDocument)
-                    UITextField.selectedTextRange = UITextField.textRange(from: UITextField.position(from: UITextField.beginningOfDocument, offset: self.cursorPosition)!, to: UITextField.position(from: UITextField.beginningOfDocument, offset: self.cursorPosition)!)
+                    NSTextField.currentEditor()?.selectedRange = NSRange(location: selection, length: 0)
                 }
 #endif
                 self.text = replaceSymbols(text: newValue)
-                relevantText = getReleventText(text: newValue)
+                relevantText = getReleventText(text: self.text)
             }
     }
 
     func replaceSymbols(text: String) -> String {
         guard cursorPosition > 0 else { return text }
+        cursorPosition = min(cursorPosition, text.count)
 
         var updatedText = text
 
@@ -223,7 +195,7 @@ struct ExpressionFieldView: View {
     /// For example, if the user types in 5newt, the relevant text is "newt"
     /// - Returns: The relevant text to use for
     func getReleventText(text: String) -> String? {
-        if text.isEmpty || cursorPosition <= 0 {
+        if text.isEmpty || cursorPosition <= 0 || cursorPosition > text.count {
             return nil
         }
         let previousCharIdx = text.index(text.startIndex, offsetBy: cursorPosition - 1)

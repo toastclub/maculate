@@ -57,7 +57,8 @@ actor CurrencyManager {
     func injectConversionRates() {
         // map to a \n delimited string in the form of CODE:RATE
         let conversionRates = try? modelContext.fetch(FetchDescriptor<ConversionRate>())
-        let conversionRatesString = conversionRates?.map { "\($0.toCurrency.uppercased()):\($0.rate)" }.joined(separator: "\n")
+        guard let conversionRates else { return }
+        let conversionRatesString = conversionRates.map { "\($0.toCurrency.uppercased()):\($0.rate)" }.joined(separator: "\n")
         injectCurrencies(std.string(conversionRatesString))
     }
 }

@@ -60,6 +60,7 @@ enum AngleUnit: String, CaseIterable, Identifiable {
     var id: String { self.rawValue }
 }
 
+#if os(macOS)
 extension EnvironmentValues {
     var window: NSWindow? {
         get { self[WindowKey.self] }
@@ -70,6 +71,7 @@ extension EnvironmentValues {
 struct WindowKey: EnvironmentKey {
     static var defaultValue: NSWindow? { nil }
 }
+#endif
 
 @main
 struct maculateApp: App {
@@ -78,16 +80,15 @@ struct maculateApp: App {
 #endif
     @AppStorage("angleUnit") var angleUnit = AngleUnit.degrees
     
+#if os(macOS)
     @Environment(\.window) var windowEnv: NSWindow?
     @Environment(\.openWindow) var openWindow
     
     @State var window: NSWindow? = nil
     @State var pinning = false
+#endif
 
     var body: some Scene {
-        Window("Dictionary", id: "dictionary") {
-            DictionaryView()
-        }
         WindowGroup {
             ContentView()
                 .modify {
@@ -100,7 +101,7 @@ struct maculateApp: App {
 #if os(macOS)
                 .background(VisualEffect(window: $window).ignoresSafeArea())
                 .environment(\.window, window)
-                .onChange(of: pinning) { isPinning in
+                .onChange(of: pinning) { _, isPinning in
                     if let window = window {
                         window.level = isPinning ? .floating : .normal
                     }
@@ -137,6 +138,12 @@ struct maculateApp: App {
                     Text("Dictionary")
                 }
             }
+        }
+#endif
+
+#if os(macOS)
+        Window("Dictionary", id: "dictionary") {
+            DictionaryView()
         }
 #endif
     }

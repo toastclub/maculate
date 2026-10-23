@@ -23,12 +23,24 @@ final class maculateUITests: XCTestCase {
     }
 
     @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
+    func testReturnSubmitsSuccessiveCalculations() throws {
         let app = XCUIApplication()
         app.launch()
+#if os(iOS)
+        let field = app.textFields["expressionField"]
+#else
+        let field = app.textFields["Enter an expression"]
+#endif
+        XCTAssertTrue(field.waitForExistence(timeout: 10))
+        field.tap()
+        field.typeText("12345+67890\n")
+        XCTAssertTrue(app.staticTexts["80235"].waitForExistence(timeout: 5))
+        XCTAssertTrue(["", "Enter an expression"].contains(field.value as? String ?? "<missing>"))
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        // Return must retain focus so another calculation needs no extra tap.
+        field.typeText("9876*5\n")
+        XCTAssertTrue(app.staticTexts["49380"].waitForExistence(timeout: 5))
+        XCTAssertTrue(["", "Enter an expression"].contains(field.value as? String ?? "<missing>"))
     }
 
     @MainActor

@@ -1,4 +1,5 @@
 libqalc/result
+libqalc/.build/
 Makefile.in
 .DS_Store
 frameworks

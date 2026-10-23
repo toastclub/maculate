@@ -8,6 +8,7 @@
 #ifndef DICT_H
 #define DICT_H
 #include <string>
+#include <vector>
 using std::string;
 
 enum DictType
