@@ -26,7 +26,7 @@ struct AboutView: View {
             Text("Maculate")
                 .font(.system(.title, design: .serif,weight: .bold))
             // app version
-            Text("1.0")
+            Text(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—")
                 .font(.system(.body, design: .rounded))
             
             // app description
