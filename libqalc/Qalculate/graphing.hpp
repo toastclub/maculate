@@ -21,8 +21,8 @@ struct GraphSamples {
     std::string message;
 };
 
-// Samples a function of x using Qalculate's plot API. Equations are not solved
-// or rewritten; non-real and undefined samples break the curve.
-GraphSamples sampleGraph(std::string expression, double min, double max, int samples);
+// Functions of x, explicit y=f(x) equations, and polar
+// r=f(theta) curves over one revolution (radians). Undefined samples break paths.
+GraphSamples sampleGraph(std::string expression, double minX, double maxX, int samples);
 
 #endif

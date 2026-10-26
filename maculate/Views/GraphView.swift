@@ -22,16 +22,16 @@ struct PlotData: Sendable {
 private actor PlotSampler {
     static let shared = PlotSampler()
 
-    func sample(expression: String, min: Double, max: Double) -> PlotData {
+    func sample(expression: String, viewport: GraphViewport) -> PlotData {
         guard !Task.isCancelled else { return PlotData() }
-        let result = sampleGraph(std.string(expression), min, max, 1001)
+        let result = sampleGraph(std.string(expression), viewport.minX, viewport.maxX, 1001)
         return PlotData(points: result.points.map {
             PlotPoint(x: $0.x, y: $0.y, startsSegment: $0.startsSegment)
         }, message: String(result.message))
     }
 }
 
-struct GraphViewport: Equatable {
+struct GraphViewport: Equatable, Sendable {
     var x = 0.0
     var y = 0.0
     var width = 20.0
@@ -54,8 +54,7 @@ struct GraphViewport: Equatable {
 
 private struct PlotRequest: Equatable {
     let expression: String
-    let min: Double
-    let max: Double
+    let viewport: GraphViewport
 }
 
 struct GraphView: View {
@@ -94,6 +93,8 @@ struct GraphView: View {
             Canvas { context, size in
                 draw(context: context, size: size, viewport: displayed)
             }
+            .onAppear { fitViewport(to: geometry.size) }
+            .onChange(of: geometry.size) { _, size in fitViewport(to: size) }
             .contentShape(Rectangle())
             .gesture(DragGesture()
                 .updating($translation) { value, state, _ in state = value.translation }
@@ -147,7 +148,7 @@ struct GraphView: View {
                 }
 #endif
                 graphControl("Reset", symbol: "arrow.counterclockwise") {
-                    viewport = GraphViewport()
+                    viewport = GraphViewport(width: 20 * viewport.width / viewport.height)
                 }
             }
             .padding(10)
@@ -171,15 +172,20 @@ struct GraphView: View {
         .padding(.top, 4)
         .padding(.bottom, 12)
         .onChange(of: equation) { _, _ in data = PlotData() }
-        .task(id: PlotRequest(expression: equation, min: viewport.minX, max: viewport.maxX)) {
+        .task(id: PlotRequest(expression: equation, viewport: viewport)) {
             isSampling = true
             do { try await Task.sleep(for: .milliseconds(180)) }
             catch { return }
-            let sampled = await PlotSampler.shared.sample(expression: equation, min: viewport.minX, max: viewport.maxX)
+            let sampled = await PlotSampler.shared.sample(expression: equation, viewport: viewport)
             guard !Task.isCancelled else { return }
             data = sampled
             isSampling = false
         }
+    }
+
+    private func fitViewport(to size: CGSize) {
+        guard size.width > 0, size.height > 0 else { return }
+        viewport.width = viewport.height * size.width / size.height
     }
 
     private func graphControl(_ label: String, symbol: String, action: @escaping () -> Void) -> some View {
