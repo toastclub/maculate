@@ -14,16 +14,22 @@ Due to the reoccuring expenses associated with Apple development, Maculate build
 
 ## Building
 
-> [!NOTE]
-> Ensure XCode is closed before running `./build.sh`. Otherwise, XCode will detect the `rm` commands and break configuration.
+You'll need Xcode and `gettext`.
 
 Maculate is divided into two parts: the Swift frontend, and the C++ backend. The backend is built using CMake, and the frontend is built using Xcode. The backend is built as a static library, and the frontend links against it.
 
-Due to the fact the backend was intended to be built on Linux, the backend is built using nix, which creates a reproducible build environment.
+```sh
+brew install gettext
+./libqalc/build-apple.sh
+```
 
-After nix has been installed, run `./build.sh` inside the libqalc directory. The build script is genuinely disgusting, and one thing you'll need to do is make it not reference Toastcat LLC. After doing that, the frameworks must be enabled in Xcode, and the project should build.
+You may want XCode to be closed when you do this but it will probably be fine.
 
-Under certain circumstances, we may not be able to provide assistance in building the project within XCode.
+Then open `maculate.xcodeproj`, select the **Maculate-macOS** scheme, and run.
+
+For iOS and the simulator, build the dependencies with `./libqalc/build-apple.sh all`, then select **Maculate-iOS** and your device or simulator in Xcode.
+
+Downloaded sources and build files are cached in `libqalc/.build/apple`. Set `APPLE_BUILD_DIR` to an absolute path to use another cache, or `APPLE_BUILD_JOBS` to change the number of build jobs (default: 8).
 
 ## Open Source Status
 
