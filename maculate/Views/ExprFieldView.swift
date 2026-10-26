@@ -43,44 +43,26 @@ struct ExpressionFieldView: View {
         !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
-    private var actionSize: CGFloat {
-#if os(macOS)
-        32
-#else
-        44
-#endif
-    }
-
     var body: some View {
         HStack(alignment: .bottom, spacing: 0) {
             expressionInput
             HStack(spacing: 8) {
                 Button { submit(asGraph: true) } label: {
-                    Image(systemName: "chart.xyaxis.line")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(.secondary)
-                        .frame(width: actionSize, height: actionSize)
-                        .contentShape(Circle())
+                    Label("Graph", systemImage: "chart.xyaxis.line")
                 }
                 .accessibilityLabel("Graph")
                 .help("Graph this expression")
-                .modifier(GlassControlSurface())
+                .modifier(GlassControlSurface(size: .extraLarge))
 
                 Button { submit() } label: {
-                    Image(systemName: "arrow.up")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(Color.accentColor)
-                        .frame(width: actionSize, height: actionSize)
-                        .contentShape(Circle())
+                    Label("Send", systemImage: "arrow.up")
                 }
                 .accessibilityLabel("Send")
                 .accessibilityIdentifier("sendExpression")
                 .help("Calculate this expression")
-                .modifier(GlassControlSurface())
+                .modifier(GlassControlSurface(prominent: true, size: .extraLarge))
             }
-            .buttonStyle(.plain)
             .disabled(!hasExpression)
-            .opacity(hasExpression ? 1 : 0.4)
             .padding(.trailing)
             .padding(.bottom, 7)
         }

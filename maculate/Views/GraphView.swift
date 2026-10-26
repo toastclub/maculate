@@ -60,7 +60,6 @@ private struct PlotRequest: Equatable {
 struct GraphView: View {
     let equation: String
     @Environment(\.colorScheme) private var colorScheme
-    @State private var isHovered = false
     @State private var viewport = GraphViewport()
     @State private var data = PlotData()
     @State private var isSampling = false
@@ -71,14 +70,6 @@ struct GraphView: View {
         colorScheme == .dark
             ? Color(red: 0.085, green: 0.091, blue: 0.105)
             : Color(red: 0.933, green: 0.935, blue: 0.941)
-    }
-
-    private var controlSize: CGFloat {
-#if os(macOS)
-        27
-#else
-        44
-#endif
     }
 
     private var ink: Color {
@@ -117,39 +108,54 @@ struct GraphView: View {
             .help("Drag to pan · Pinch to zoom")
         }
         .frame(height: 232)
-        .background {
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(surface.shadow(.inner(color: .black.opacity(colorScheme == .dark ? 0.35 : 0.09), radius: 3, x: 0, y: 2)))
-        }
+        .background { graphSurface }
         .overlay(alignment: .center) {
             if !data.message.isEmpty {
                 VStack(spacing: 8) {
                     Image(systemName: "waveform.path")
-                        .font(.system(size: 20, weight: .light))
+                        .font(.title2.weight(.light))
                     Text(data.message)
-                        .font(.system(size: 12))
+                        .font(.caption)
                         .multilineTextAlignment(.center)
                         .textSelection(.enabled)
                 }
                 .foregroundStyle(.secondary)
                 .padding(20)
                 .frame(maxWidth: 300)
-                .background(surface.opacity(0.96), in: RoundedRectangle(cornerRadius: 8))
+                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
             }
         }
         .overlay(alignment: .bottomTrailing) {
             HStack(spacing: 6) {
 #if os(macOS)
-                graphControl("Zoom out", symbol: "minus") {
-                    viewport = viewport.transformed(magnification: 0.5, size: .zero)
+                HStack(spacing: 0) {
+                    graphControl("Zoom out", symbol: "minus") {
+                        viewport = viewport.transformed(magnification: 0.5, size: .zero)
+                    }
+                    .padding(.horizontal, 4)
+                    graphControl("Zoom in", symbol: "plus") {
+                        viewport = viewport.transformed(magnification: 2, size: .zero)
+                    }
+                    .padding(.horizontal, 4)
                 }
-                graphControl("Zoom in", symbol: "plus") {
-                    viewport = viewport.transformed(magnification: 2, size: .zero)
+                .buttonStyle(.borderless)
+                .font(.body)
+                .controlSize(.regular)
+                .padding(4)
+                .accessibilityElement(children: .contain)
+                .accessibilityLabel("Zoom")
+                .modify {
+                    if #available(macOS 26.0, *) {
+                        $0.glassEffect(.regular.interactive(), in: Capsule())
+                    } else {
+                        $0.background(.ultraThinMaterial, in: Capsule())
+                    }
                 }
 #endif
                 graphControl("Reset", symbol: "arrow.counterclockwise") {
                     viewport = GraphViewport(width: 20 * viewport.width / viewport.height)
                 }
+                .modifier(GlassControlSurface())
             }
             .padding(10)
         }
@@ -159,15 +165,6 @@ struct GraphView: View {
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .strokeBorder(LinearGradient(colors: [
-                    .black.opacity(colorScheme == .dark ? 0.4 : 0.13),
-                    .white.opacity(colorScheme == .dark ? 0.07 : 0.8)
-                ], startPoint: .top, endPoint: .bottom), lineWidth: 0.75)
-                .allowsHitTesting(false)
-        }
-        .onHover { isHovered = $0 }
         .padding(.horizontal, 16)
         .padding(.top, 4)
         .padding(.bottom, 12)
@@ -188,18 +185,25 @@ struct GraphView: View {
         viewport.width = viewport.height * size.width / size.height
     }
 
-    private func graphControl(_ label: String, symbol: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Image(systemName: symbol)
-                .font(.system(size: 11, weight: .medium))
-                .foregroundStyle(.primary.opacity(isHovered ? 0.85 : 0.65))
-                .frame(width: controlSize, height: controlSize)
-                .contentShape(Rectangle())
+    @ViewBuilder private var graphSurface: some View {
+        let shape = RoundedRectangle(cornerRadius: 12, style: .continuous)
+        if #available(macOS 26.0, iOS 26.0, *) {
+            Color.clear.glassEffect(.clear, in: shape)
+        } else {
+            shape.fill(surface.shadow(.inner(color: .black.opacity(colorScheme == .dark ? 0.35 : 0.09), radius: 3, y: 2)))
+                .overlay {
+                    shape.strokeBorder(LinearGradient(colors: [
+                        .black.opacity(colorScheme == .dark ? 0.4 : 0.13),
+                        .white.opacity(colorScheme == .dark ? 0.07 : 0.8)
+                    ], startPoint: .top, endPoint: .bottom), lineWidth: 0.75)
+                }
         }
-        .buttonStyle(.plain)
-        .modifier(GlassControlSurface())
-        .accessibilityLabel(label)
-        .help(label)
+    }
+
+    private func graphControl(_ label: String, symbol: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) { Label(label, systemImage: symbol) }
+            .labelStyle(.iconOnly)
+            .help(label)
     }
 
     private func ticks(min: Double, max: Double) -> [Double] {
@@ -254,7 +258,7 @@ struct GraphView: View {
         clipped.clip(to: Path(rect))
         clipped.stroke(curve, with: .color(ink), style: StrokeStyle(lineWidth: 1.8, lineCap: .round, lineJoin: .round))
 
-        let labelY = min(size.height - controlSize - 28, max(15, origin.y + 12))
+        let labelY = min(size.height - 60, max(15, origin.y + 12))
         let labelX = min(size.width - 38, max(12, origin.x + 8))
         func label(_ value: Double) -> Text {
             Text(value.formatted(.number.precision(.significantDigits(1...3))))
