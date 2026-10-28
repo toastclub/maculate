@@ -12,7 +12,6 @@
 // text input suggestions
 Completions getCompletions(std::string input)
 {
-    std::lock_guard<std::recursive_mutex> lock(calculatorMutex());
     Calculator *calc = getCalculator();
     Completions completions;
 
@@ -53,7 +52,6 @@ Completions getCompletions(std::string input)
 
 Calculation calculate(std::string calculation)
 {
-    std::lock_guard<std::recursive_mutex> lock(calculatorMutex());
     Calculator *calc = getCalculator();
     calculation = calc->unlocalizeExpression(calculation);
     std::string parsed_str;
@@ -80,7 +78,6 @@ Calculation calculate(std::string calculation)
 
 bool injectCurrencies(std::string currencies)
 {
-    std::lock_guard<std::recursive_mutex> lock(calculatorMutex());
     // currencies are in the format "USD:1.23\n", iterate over them
     std::unordered_map<std::string, std::string> currencyMap;
     std::istringstream stream(currencies);

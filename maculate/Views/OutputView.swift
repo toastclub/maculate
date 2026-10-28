@@ -90,7 +90,6 @@ struct OutputView: View {
         VStack(alignment: .leading) {
             HStack {
                 Text(item.expression)
-                    .font(item.graphExpression == nil ? .body : .system(size: 13, weight: .medium, design: .monospaced))
                     .fontDesign(.monospaced)
                     .padding([.leading,.trailing])
                     .textSelection(.enabled)
@@ -102,15 +101,10 @@ struct OutputView: View {
                         .padding(.trailing)
                 }
             }
-            .padding(.top, item.graphExpression == nil ? 0 : 6)
-            if let expression = item.graphExpression {
-                GraphView(equation: expression)
-            } else {
-                Text(styledOutput(item.result))
-                    .padding([.leading,.trailing])
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .textSelection(.enabled)
-            }
+            Text(styledOutput(item.result))
+                .padding([.leading,.trailing])
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .textSelection(.enabled)
             ForEach(item.messages, id: \.self) { message in
                 switch message.type {
                     case .error:
@@ -146,15 +140,13 @@ struct OutputView: View {
                 UIPasteboard.general.string = item.expression
 #endif
             }
-            if item.graphExpression == nil {
-                Button("Copy Result") {
-    #if os(macOS)
-                    NSPasteboard.general.clearContents()
-                    NSPasteboard.general.setString(item.result, forType: .string)
-    #else
-                    UIPasteboard.general.string = item.result
-    #endif
-                }
+            Button("Copy Result") {
+#if os(macOS)
+                NSPasteboard.general.clearContents()
+                NSPasteboard.general.setString(item.result, forType: .string)
+#else
+                UIPasteboard.general.string = item.result
+#endif
             }
             Divider()
             Button("Star", systemImage: item.starred ? "star.fill" : "star") {

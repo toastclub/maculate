@@ -27,17 +27,15 @@ enum SpecialStatuses: String, Codable, Hashable {
 class HistoryItem: Equatable,Hashable {
     var expression: String
     var result: String
-    var graphExpression: String? = nil
     var messages: [Messages]
     var specialStatus: [SpecialStatuses]?
     var date: Date = Date()
     var starred: Bool = false
     var tape: String = ""
     
-    init(expression: String, result: String, messages: [Messages], specialStatus: [SpecialStatuses]? = nil, graphExpression: String? = nil) {
+    init(expression: String, result: String, messages: [Messages], specialStatus: [SpecialStatuses]? = nil) {
         self.expression = expression
         self.result = result
-        self.graphExpression = graphExpression
         self.messages = messages
         self.specialStatus = specialStatus
         self.starred = false
