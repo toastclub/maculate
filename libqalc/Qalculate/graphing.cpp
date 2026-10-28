@@ -22,7 +22,7 @@ std::string polarCoordinates(const std::string &expression)
 }
 }
 
-GraphSamples sampleGraph(std::string expression, double min, double max, int samples)
+GraphSamples sampleGraph(std::string expression, double min, double max, int samples, double maxAngle)
 {
     GraphSamples result;
     if (!std::isfinite(min) || !std::isfinite(max) || min >= max || samples < 2 || samples > 4096) {
@@ -54,7 +54,7 @@ GraphSamples sampleGraph(std::string expression, double min, double max, int sam
     MathStructure xs, ys;
     if (result.message.empty()) {
         ys = calc->expressionToPlotVector(normalized,
-            MathStructure(polar ? 0.0 : min), MathStructure(polar ? 2 * std::acos(-1.0) : max),
+            MathStructure(polar ? 0.0 : min), MathStructure(polar ? std::max(2 * std::acos(-1.0), maxAngle) : max),
             samples, &xs, polar ? "θ" : "x", po, 500);
     }
 

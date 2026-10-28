@@ -65,8 +65,7 @@ final class maculateUITests: XCTestCase {
 #endif
 
         field.tap()
-        field.typeText("314159+2")
-        app.buttons["sendExpression"].tap()
+        field.typeText("314159+2\n")
         XCTAssertTrue(app.staticTexts["314161"].waitForExistence(timeout: 5))
         XCTAssertTrue(graph.exists)
         app.terminate()

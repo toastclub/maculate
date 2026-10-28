@@ -24,7 +24,8 @@ private actor PlotSampler {
 
     func sample(expression: String, viewport: GraphViewport) -> PlotData {
         guard !Task.isCancelled else { return PlotData() }
-        let result = sampleGraph(std.string(expression), viewport.minX, viewport.maxX, 1001)
+        let maxAngle = hypot(max(abs(viewport.minX), abs(viewport.maxX)), max(abs(viewport.minY), abs(viewport.maxY)))
+        let result = sampleGraph(std.string(expression), viewport.minX, viewport.maxX, 1001, maxAngle)
         return PlotData(points: result.points.map {
             PlotPoint(x: $0.x, y: $0.y, startsSegment: $0.startsSegment)
         }, message: String(result.message))
@@ -105,7 +106,6 @@ struct GraphView: View {
 #else
             .accessibilityHint("Drag to pan. Pinch to zoom. The reset button is in the lower right.")
 #endif
-            .help("Drag to pan · Pinch to zoom")
         }
         .frame(height: 232)
         .background { graphSurface }

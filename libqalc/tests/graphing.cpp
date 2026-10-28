@@ -46,6 +46,15 @@ int main()
     for (auto p : rose.points) maxRadius = std::max(maxRadius, std::hypot(p.x,p.y));
     assert(maxRadius > 1.9 && maxRadius <= 2.000001);
 
+    // Expanding the polar domain keeps the spiral's origin and positive-angle branch.
+    auto spiral = sampleGraph("r=theta", -20, 20, 101, 20);
+    assert(spiral.message.empty() && spiral.points.size() == 101);
+    for (size_t i = 0; i < spiral.points.size(); ++i) {
+        double angle = 20.0 * i / 100;
+        assert(std::abs(spiral.points[i].x - angle * std::cos(angle)) < 1e-8);
+        assert(std::abs(spiral.points[i].y - angle * std::sin(angle)) < 1e-8);
+    }
+
     for (auto expression : {"x+y=1", "x^2+y^2=1", "x=2", "y=x+y", "r=r+theta", "x+y<1", "r=i", "i", ""})
         assert(sampleGraph(expression, -2, 2, 101).points.empty());
     assert(sampleGraph("x", 2, -2, 101).points.empty());

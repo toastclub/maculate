@@ -19,6 +19,7 @@ struct ExpressionFieldView: View {
 #endif
     @State private var cursorPosition: Int = 0
     @State private var relevantText: String?
+    @Namespace private var graphControls
 
     let replacementMap = [
         "functions": [
@@ -33,6 +34,7 @@ struct ExpressionFieldView: View {
             "tau": "τ",
             "rho": "ρ",
             "phi": "φ",
+            "theta": "θ",
         ],
     ]
 
@@ -43,28 +45,58 @@ struct ExpressionFieldView: View {
         !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
+    private static let graphableExpression = try! NSRegularExpression(
+        pattern: #"(?<![\p{L}_])(?:x|θ|theta)(?![\p{L}\p{Nd}_])|^\s*[yr]\s*=(?!=)"#
+    )
+
+    private var canGraph: Bool {
+        Self.graphableExpression.firstMatch(
+            in: text, range: NSRange(text.startIndex..., in: text)
+        ) != nil
+    }
+
     var body: some View {
         HStack(alignment: .bottom, spacing: 0) {
             expressionInput
-            HStack(spacing: 8) {
+            expressionActions
+            .disabled(!hasExpression)
+            .padding(.trailing)
+            .padding(.bottom, 7)
+        }
+    }
+
+    private var expressionActions: some View {
+        Group {
+            if #available(macOS 26.0, iOS 26.0, *) {
+                GlassEffectContainer {
+                    actionButtons
+                }
+            } else {
+                actionButtons
+            }
+        }
+        .animation(.easeInOut(duration: 0.2), value: canGraph)
+    }
+
+    private var actionButtons: some View {
+        HStack(spacing: 8) {
+            if canGraph {
                 Button { submit(asGraph: true) } label: {
                     Label("Graph", systemImage: "chart.xyaxis.line")
                 }
                 .accessibilityLabel("Graph")
                 .help("Graph this expression")
                 .modifier(GlassControlSurface(size: .extraLarge))
-
-                Button { submit() } label: {
-                    Label("Send", systemImage: "arrow.up")
+                .modify {
+                    if #available(macOS 26.0, iOS 26.0, *) {
+                        $0.glassEffectID("graph", in: graphControls)
+                            .glassEffectTransition(.materialize)
+                    } else {
+                        $0
+                    }
                 }
-                .accessibilityLabel("Send")
-                .accessibilityIdentifier("sendExpression")
-                .help("Calculate this expression")
-                .modifier(GlassControlSurface(prominent: true, size: .extraLarge))
+                .transition(.opacity)
             }
-            .disabled(!hasExpression)
-            .padding(.trailing)
-            .padding(.bottom, 7)
         }
     }
 

@@ -22,7 +22,7 @@ struct GraphSamples {
 };
 
 // Functions of x, explicit y=f(x) equations, and polar
-// r=f(theta) curves over one revolution (radians). Undefined samples break paths.
-GraphSamples sampleGraph(std::string expression, double minX, double maxX, int samples);
+// r=f(theta) curves from zero to at least one revolution (radians). Undefined samples break paths.
+GraphSamples sampleGraph(std::string expression, double minX, double maxX, int samples, double maxAngle = 0);
 
 #endif
