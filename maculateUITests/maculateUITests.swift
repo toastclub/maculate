@@ -44,6 +44,38 @@ final class maculateUITests: XCTestCase {
     }
 
     @MainActor
+    func testGraphsAppearAndPersistInTimeline() throws {
+        let app = XCUIApplication()
+        app.launch()
+#if os(iOS)
+        let field = app.textFields["expressionField"]
+#else
+        let field = app.textFields["Enter an expression"]
+#endif
+        XCTAssertTrue(field.waitForExistence(timeout: 10))
+        field.tap()
+        field.typeText("x^2")
+        app.buttons["Graph"].tap()
+        let graph = app.descendants(matching: .any).matching(identifier: "graphResult").firstMatch
+        XCTAssertTrue(graph.waitForExistence(timeout: 5))
+        XCTAssertEqual(app.sheets.count, 0)
+#if os(iOS)
+        XCTAssertFalse(app.buttons["Zoom in"].exists)
+        XCTAssertFalse(app.buttons["Zoom out"].exists)
+#endif
+
+        field.tap()
+        field.typeText("314159+2")
+        app.buttons["sendExpression"].tap()
+        XCTAssertTrue(app.staticTexts["314161"].waitForExistence(timeout: 5))
+        XCTAssertTrue(graph.exists)
+        app.terminate()
+        app.launch()
+        XCTAssertTrue(graph.waitForExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts["314161"].exists)
+    }
+
+    @MainActor
     func testLaunchPerformance() throws {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
             // This measures how long it takes to launch your application.

@@ -5,7 +5,13 @@
 //  Created by Evan Boehs on 1/22/25.
 //
 
-#include "qalculate.h"
+#include "internal.hpp"
+
+std::recursive_mutex &calculatorMutex()
+{
+    static std::recursive_mutex mutex;
+    return mutex;
+}
 
 EvaluationOptions evalops;
 PrintOptions printops;

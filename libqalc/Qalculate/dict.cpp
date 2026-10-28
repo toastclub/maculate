@@ -29,6 +29,7 @@ std::string to_html_escaped(const std::string strpre)
 
 DictItems getDictItems(DictType type)
 {
+    std::lock_guard<std::recursive_mutex> lock(calculatorMutex());
     Calculator *calc = getCalculator();
     DictItems items;
 
@@ -164,6 +165,7 @@ std::string generateFunctionBody(MathFunction *f)
 
 std::string getBodyForItem(const DictItem &item)
 {
+    std::lock_guard<std::recursive_mutex> lock(calculatorMutex());
     Calculator *calc = getCalculator();
     std::string str = "";
     switch (item.type)

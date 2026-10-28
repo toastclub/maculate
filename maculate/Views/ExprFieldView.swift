@@ -39,7 +39,46 @@ struct ExpressionFieldView: View {
     @AppStorage("hasEverInteracted") var hasEverInteracted = false
     @Environment(\.modelContext) var modelContext
 
+    private var hasExpression: Bool {
+        !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
     var body: some View {
+        HStack(alignment: .bottom, spacing: 0) {
+            expressionInput
+            HStack(spacing: 8) {
+                Button { submit(asGraph: true) } label: {
+                    Label("Graph", systemImage: "chart.xyaxis.line")
+                }
+                .accessibilityLabel("Graph")
+                .help("Graph this expression")
+                .modifier(GlassControlSurface(size: .extraLarge))
+
+                Button { submit() } label: {
+                    Label("Send", systemImage: "arrow.up")
+                }
+                .accessibilityLabel("Send")
+                .accessibilityIdentifier("sendExpression")
+                .help("Calculate this expression")
+                .modifier(GlassControlSurface(prominent: true, size: .extraLarge))
+            }
+            .disabled(!hasExpression)
+            .padding(.trailing)
+            .padding(.bottom, 7)
+        }
+    }
+
+    private func submit(asGraph: Bool = false) {
+        guard hasExpression else { return }
+        calculateExpression(asGraph: asGraph)
+        text = ""
+        cursorPosition = 0
+#if os(macOS)
+        if let field = NSTextField { field.window?.makeFirstResponder(field) }
+#endif
+    }
+
+    private var expressionInput: some View {
         Group {
 #if os(macOS)
         TextField("Enter an expression", text: $text)
@@ -48,8 +87,7 @@ struct ExpressionFieldView: View {
                 DispatchQueue.main.async { NSTextField = textView }
             }
             .onSubmit {
-                calculateExpression()
-                self.text = ""
+                submit()
             }
             .modify {
                 // The completion API is only available on macOS 15.0 and later.
@@ -71,8 +109,7 @@ struct ExpressionFieldView: View {
             }
 #else
         ExpressionTextField(text: $text, cursorPosition: $cursorPosition) {
-            calculateExpression()
-            self.text = ""
+            submit()
         }
             .padding(.top,25)
             .toolbar {
@@ -166,7 +203,11 @@ struct ExpressionFieldView: View {
         return updatedText
     }
 
-    func calculateExpression() {
+    func calculateExpression(asGraph: Bool = false) {
+        if asGraph {
+            modelContext.insert(HistoryItem(expression: text, result: "", messages: [], graphExpression: text))
+            return
+        }
         let result = calculate(std.string(text))
 
         // split by \n, and get type and warnings by splitting from :

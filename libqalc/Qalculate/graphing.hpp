@@ -8,6 +8,21 @@
 #ifndef GRAPHING_H
 #define GRAPHING_H
 #include <string>
-using std::string;
+#include <vector>
 
-#endif // GRAPHING_H
+struct GraphPoint {
+    double x;
+    double y;
+    bool startsSegment;
+};
+
+struct GraphSamples {
+    std::vector<GraphPoint> points;
+    std::string message;
+};
+
+// Functions of x, explicit y=f(x) equations, and polar
+// r=f(theta) curves over one revolution (radians). Undefined samples break paths.
+GraphSamples sampleGraph(std::string expression, double minX, double maxX, int samples);
+
+#endif
